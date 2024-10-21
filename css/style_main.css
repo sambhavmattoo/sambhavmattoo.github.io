@@ -1,0 +1,29 @@
+* {
+    background-color: black;
+}
+
+.title_navbar {
+    background-color: rgb(33, 33, 33);
+    border-radius: 25px;
+    height: 50vh;
+    margin: 0 auto;
+    margin-top: 50px;
+    min-height: 250px;
+    min-width: 500px;
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 2px;
+    width: 60vw;    
+}
+
+.title_text {
+    background-color: rgb(33, 33, 33);
+    color: yellowgreen;
+    font-family: "Bungee Shade";
+    font-size: max(7vw, 75px);
+    line-height: max(7vw, 80px);
+    position: relative;
+    top: 25px;
+    text-align: center;
+
+}
