@@ -1,29 +1,69 @@
+/* The main class for the page. */
 * {
     background-color: black;
 }
 
+/* The class for the combined title and navigation bar. */
 .title_navbar {
     background-color: rgb(33, 33, 33);
     border-radius: 25px;
     height: 50vh;
+    left: 0;
     margin: 0 auto;
     margin-top: 50px;
-    min-height: 250px;
+    min-height: 350px;
     min-width: 500px;
     outline-color: white;
     outline-style: solid;
     outline-width: 2px;
+    position: fixed;
+    right: 0;
+    text-align: center;
     width: 60vw;    
 }
 
+/* The class for the title text. */
 .title_text {
-    background-color: rgb(33, 33, 33);
+    background: rgba(33, 33, 33, 0);
     color: yellowgreen;
     font-family: "Bungee Shade";
     font-size: max(7vw, 75px);
-    line-height: max(7vw, 80px);
+    line-height: max(7vw, 95px);
     position: relative;
     top: 25px;
     text-align: center;
 
 }
+
+/* The class for each of the navigation buttons. */
+.navbar_button {
+    background-color: rgb(33, 33, 33);
+    border-radius: 10px;
+    color: white;
+    font-family: "VT323";
+    font-size: max(1.2vw, 12px);
+    height: 7.5vh;
+    margin-left: 1.25vw;
+    margin-right: 1.25vw;
+    margin-top: 10vh;
+    min-height: 45px;
+    min-width: 75px;
+    outline-color: white;
+    outline-style: solid;
+    outline-width: 1px;
+    transition-duration: 0.4s;
+    width: 8vw;
+}
+
+/* The class to declare hovering behaviour on navigation buttons. */
+.navbar_button:hover {
+    background-color: white;
+    color: purple;
+}
+
+/* The class for when a navigation button is clicked. */
+.navbar_button:active {
+    background-color: darkgray;
+    color: blue;
+}
+
