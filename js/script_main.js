@@ -13,34 +13,34 @@ function adjustOnScrollDesktop() {
     const projectsNavbarButton = document.getElementById("projects_navbar_button");
     const blogNavbarButton = document.getElementById("blog_navbar_button");
     const contactNavbarButton = document.getElementById("contact_navbar_button");
-
-    // Change transition duration of navigation buttons while scrolling to stop button "lag".
-    aboutNavbarButton.style.transitionDuration = "0s";
-    experienceNavbarButton.style.transitionDuration = "0s";
-    projectsNavbarButton.style.transitionDuration = "0s";
-    blogNavbarButton.style.transitionDuration = "0s";
-    contactNavbarButton.style.transitionDuration = "0s";
+    const navbarClearanceFixed = document.getElementById("navbar_clearance_block_fixed");
+    const navbarClearanceRelative = document.getElementById("navbar_clearance_block_relative");
 
     // Initial and final values of CSS attributes.
-    const initialHeight = 27.5;                 // in vw
-    const finalHeight = 5.25;                   // in vw 
-    const initialMinHeight = 315;               // in px
-    const finalMinHeight = 65;                  // in px
-    const initialFontSizeVW = 7;                // in vw
-    const initialFontSizePX = 75;               // in px
-    const finalFontSize = 0;                    // Title text disappears
-    const initialOpacity = 1;                   // Fully visible
-    const finalOpacity = 0;                     // Fully transparent
-    const initialTop = 2.5                      // in vw
-    const finalTop = 0                          // in vw
-    const initialMarginTop = 50;                // in px
-    const finalMarginTop = 10;                  // in px
-    const initialLineHeightVW = 8;              // in vw
-    const initialLineHeightPX = 95;             // in px
-    const finalLineHeight = 0;                  // in px
-    const initialNavbarButtonMarginTop = 5;     // in vw
-    const finalNavbarButtonMarginTop = 0.6;     // in vw
-    const pxNavbarButtonMarginTop = 10;         // in px
+    const initialHeight = 27.5;                     // in vw
+    const finalHeight = 5.25;                       // in vw 
+    const initialMinHeight = 315;                   // in px
+    const finalMinHeight = 65;                      // in px
+    const initialFontSizeVW = 7;                    // in vw
+    const initialFontSizePX = 75;                   // in px
+    const finalFontSize = 0;                        // Title text disappears
+    const initialOpacity = 1;                       // Fully visible
+    const finalOpacity = 0;                         // Fully transparent
+    const initialTop = 2.5                          // in vw
+    const finalTop = 0                              // in vw
+    const initialMarginTop = 50;                    // in px
+    const finalMarginTop = 10;                      // in px
+    const initialLineHeightVW = 8;                  // in vw
+    const initialLineHeightPX = 95;                 // in px
+    const finalLineHeight = 0;                      // in px
+    const initialNavbarButtonMarginTop = 5;         // in vw
+    const finalNavbarButtonMarginTop = 0.6;         // in vw
+    const pxNavbarButtonMarginTop = 10;             // in px
+    const initialNavbarClearanceHeightVW = 27.5     // in vw
+    const initialNavbarClearanceHeightPX = 60       // in px
+    const finalNavbarClearanceHeightVW = 5.25       // in vw
+    const finalNavbarClearanceHeightPX = 20         // in px
+    const diffNavbarClearanceHeight = 5.5           // in vw
 
     // Maximum scroll threshold for transformation.
     const maxScroll = 50; // Adjust for smoothness
@@ -56,7 +56,7 @@ function adjustOnScrollDesktop() {
     const newTop = Math.max(finalTop, initialTop - (scrollTop / maxScroll) * (initialTop - finalTop));
     const newNavbarButtonMarginTopVW = Math.max(finalNavbarButtonMarginTop, initialNavbarButtonMarginTop - (scrollTop / maxScroll) * (initialNavbarButtonMarginTop - finalNavbarButtonMarginTop)); 
     const newNavbarButtonMarginTop = Math.max(newNavbarButtonMarginTopVW  * (window.innerWidth / 100), pxNavbarButtonMarginTop);
-
+    
     // Font size: calculate max(7vw, 75px) dynamically and adjust it.
     const vwFontSize = Math.max(finalFontSize, initialFontSizeVW - (scrollTop / maxScroll) * (initialFontSizeVW - finalFontSize));
     const pxFontSize = Math.max(finalFontSize, initialFontSizePX - (scrollTop / maxScroll) * (initialFontSizePX - finalFontSize));
@@ -66,6 +66,13 @@ function adjustOnScrollDesktop() {
     const vwLineHeight = Math.max(finalLineHeight, initialLineHeightVW - (scrollTop / maxScroll) * (initialLineHeightVW - finalLineHeight));
     const pxLineHeight = Math.max(finalLineHeight, initialLineHeightPX - (scrollTop / maxScroll) * (initialLineHeightPX - finalLineHeight));
     const newLineHeight = Math.max(vwLineHeight * (window.innerWidth / 100), pxLineHeight); // Adjust max(7vw, 80px)
+
+    // Calculate the relative navbar clearances.
+    const initialNavbarClearanceHeight = Math.max(initialNavbarClearanceHeightVW * (window.innerWidth / 100), initialMinHeight) + initialNavbarClearanceHeightPX;
+    const finalNavbarClearanceHeight = Math.max(finalNavbarClearanceHeightVW * (window.innerWidth / 100), finalMinHeight) + finalNavbarClearanceHeightPX;
+    const newFixedNavbarClearanceHeight = Math.max(finalNavbarClearanceHeight, initialNavbarClearanceHeight - (scrollTop / maxScroll) * (initialNavbarClearanceHeight - finalNavbarClearanceHeight));
+    const finalRelativeNavbarClearanceHeight = Math.max((finalNavbarClearanceHeightVW + diffNavbarClearanceHeight)  * (window.innerWidth / 100), finalMinHeight) + finalNavbarClearanceHeightPX;
+    const newRelativeNavbarClearanceHeight = Math.max(finalRelativeNavbarClearanceHeight, initialNavbarClearanceHeight - (scrollTop / maxScroll) * (initialNavbarClearanceHeight - finalRelativeNavbarClearanceHeight));
 
     // Apply styles dynamically.
     titleNavbar.style.height = `${newHeight}vw`;
@@ -84,17 +91,14 @@ function adjustOnScrollDesktop() {
     projectsNavbarButton.style.marginTop = `${newNavbarButtonMarginTop}px`;
     blogNavbarButton.style.marginTop = `${newNavbarButtonMarginTop}px`;
     contactNavbarButton.style.marginTop = `${newNavbarButtonMarginTop}px`;
+    navbarClearanceFixed.style.height = `${newFixedNavbarClearanceHeight}px`;
+    navbarClearanceRelative.style.height = `${newRelativeNavbarClearanceHeight}px`;
 
     // Clear the existing timeout to prevent resetting transition prematurely.
     clearTimeout(isScrollingorResizing);
 
     // Restore transitions for buttons after scrolling stops.
     isScrollingorResizing = setTimeout(() => {
-        aboutNavbarButton.style.transitionDuration = "0.4s";
-        experienceNavbarButton.style.transitionDuration = "0.4s";
-        projectsNavbarButton.style.transitionDuration = "0.4s";
-        blogNavbarButton.style.transitionDuration = "0.4s";
-        contactNavbarButton.style.transitionDuration = "0.4s";
     // Adjust timeout for responsiveness.
     }, 100); 
 
@@ -112,29 +116,29 @@ function adjustOnScrollMobile() {
     const projectsNavbarButton = document.getElementById("projects_navbar_button");
     const blogNavbarButton = document.getElementById("blog_navbar_button");
     const contactNavbarButton = document.getElementById("contact_navbar_button");
-
-    // Change transition duration of navigation buttons while scrolling to stop button "lag".
-    aboutNavbarButton.style.transitionDuration = "0s";
-    experienceNavbarButton.style.transitionDuration = "0s";
-    projectsNavbarButton.style.transitionDuration = "0s";
-    blogNavbarButton.style.transitionDuration = "0s";
-    contactNavbarButton.style.transitionDuration = "0s";
+    const navbarClearanceFixed = document.getElementById("navbar_clearance_block_fixed");
+    const navbarClearanceRelative = document.getElementById("navbar_clearance_block_relative");
 
     // Initial and final values of CSS attributes.
-    const initialHeight = 65;                   // in vw
-    const finalHeight = 17;                     // in vw 
-    const initialFontSizeVW = 12.5;             // in vw
-    const finalFontSize = 0;                    // Title text disappears
-    const initialOpacity = 1;                   // Fully visible
-    const finalOpacity = 0;                     // Fully transparent
-    const initialTop = 7.5                      // in vw
-    const finalTop = 0                          // in vw
-    const initialMarginTop = 25;                // in px
-    const finalMarginTop = 5;                   // in px
-    const initialLineHeightVW = 15;             // in vw
-    const finalLineHeight = 0;                  // in px
-    const initialNavbarButtonMarginTop = 15;    // in vw
-    const finalNavbarButtonMarginTop = 2.25;    // in vw
+    const initialHeight = 65;                       // in vw
+    const finalHeight = 17;                         // in vw 
+    const initialFontSizeVW = 12.5;                 // in vw
+    const finalFontSize = 0;                        // Title text disappears
+    const initialOpacity = 1;                       // Fully visible
+    const finalOpacity = 0;                         // Fully transparent
+    const initialTop = 7.5                          // in vw
+    const finalTop = 0                              // in vw
+    const initialMarginTop = 25;                    // in px
+    const finalMarginTop = 10;                      // in px
+    const initialLineHeightVW = 15;                 // in vw
+    const finalLineHeight = 0;                      // in px
+    const initialNavbarButtonMarginTop = 15;        // in vw
+    const finalNavbarButtonMarginTop = 2.25;        // in vw
+    const initialNavbarClearanceHeightVW = 65       // in vw
+    const initialNavbarClearanceHeightPX = 35       // in px
+    const finalNavbarClearanceHeightVW = 17         // in vw
+    const finalNavbarClearanceHeightPX = 20         // in px
+    const diffNavbarClearanceHeight = 20            // in vw
 
     // Maximum scroll threshold for transformation.
     const maxScroll = 50; // Adjust for smoothness
@@ -150,6 +154,13 @@ function adjustOnScrollMobile() {
     const newNavbarButtonMarginTop = Math.max(finalNavbarButtonMarginTop, initialNavbarButtonMarginTop - (scrollTop / maxScroll) * (initialNavbarButtonMarginTop - finalNavbarButtonMarginTop)); 
     const newFontSize = Math.max(finalFontSize, initialFontSizeVW - (scrollTop / maxScroll) * (initialFontSizeVW - finalFontSize));
     const newLineHeight = Math.max(finalLineHeight, initialLineHeightVW - (scrollTop / maxScroll) * (initialLineHeightVW - finalLineHeight));
+
+    // Calculate the relative navbar clearances.
+    const initialNavbarClearanceHeight = initialNavbarClearanceHeightVW * (window.innerWidth / 100) + initialNavbarClearanceHeightPX;
+    const finalNavbarClearanceHeight = finalNavbarClearanceHeightVW * (window.innerWidth / 100) + finalNavbarClearanceHeightPX;
+    const newFixedNavbarClearanceHeight = Math.max(finalNavbarClearanceHeight, initialNavbarClearanceHeight - (scrollTop / maxScroll) * (initialNavbarClearanceHeight - finalNavbarClearanceHeight));
+    const finalRelativeNavbarClearanceHeight = (finalNavbarClearanceHeightVW + diffNavbarClearanceHeight)  * (window.innerWidth / 100) + finalNavbarClearanceHeightPX;
+    const newRelativeNavbarClearanceHeight = Math.max(finalRelativeNavbarClearanceHeight, initialNavbarClearanceHeight - (scrollTop / maxScroll) * (initialNavbarClearanceHeight - finalRelativeNavbarClearanceHeight));
 
     // Apply styles dynamically.
     titleNavbar.style.height = `${newHeight}vw`;
@@ -168,17 +179,14 @@ function adjustOnScrollMobile() {
     projectsNavbarButton.style.marginTop = `${newNavbarButtonMarginTop}vw`;
     blogNavbarButton.style.marginTop = `${newNavbarButtonMarginTop}vw`;
     contactNavbarButton.style.marginTop = `${newNavbarButtonMarginTop}vw`;
+    navbarClearanceFixed.style.height = `${newFixedNavbarClearanceHeight}px`;
+    navbarClearanceRelative.style.height = `${newRelativeNavbarClearanceHeight}px`;
 
     // Clear the existing timeout to prevent resetting transition prematurely.
     clearTimeout(isScrollingorResizing);
 
     // Restore transitions for buttons after scrolling stops.
     isScrollingorResizing = setTimeout(() => {
-        aboutNavbarButton.style.transitionDuration = "0.4s";
-        experienceNavbarButton.style.transitionDuration = "0.4s";
-        projectsNavbarButton.style.transitionDuration = "0.4s";
-        blogNavbarButton.style.transitionDuration = "0.4s";
-        contactNavbarButton.style.transitionDuration = "0.4s";
     // Adjust timeout for responsiveness.
     }, 100); 
 
@@ -193,11 +201,6 @@ function adjustOnResizeDesktop() {
     // Find the elements needed to be modified on resizing.
     const titleTextUp = document.getElementById("title_text_up");
     const titleTextDown = document.getElementById("title_text_down");
-    const aboutNavbarButton = document.getElementById("about_navbar_button");
-    const experienceNavbarButton = document.getElementById("experience_navbar_button");
-    const projectsNavbarButton = document.getElementById("projects_navbar_button");
-    const blogNavbarButton = document.getElementById("blog_navbar_button");
-    const contactNavbarButton = document.getElementById("contact_navbar_button");
 
     // Recalculate font size based on viewport width.
     const initialFontSizeVW = 7;                                            // in vw
@@ -209,23 +212,11 @@ function adjustOnResizeDesktop() {
     titleTextUp.style.fontSize = `${newFontSize}px`;
     titleTextDown.style.fontSize = `${newFontSize}px`;
 
-    // Change transition duration of navigation buttons while scrolling to stop button "lag".
-    aboutNavbarButton.style.transitionDuration = "0s";
-    experienceNavbarButton.style.transitionDuration = "0s";
-    projectsNavbarButton.style.transitionDuration = "0s";
-    blogNavbarButton.style.transitionDuration = "0s";
-    contactNavbarButton.style.transitionDuration = "0s";
-
     // Clear the existing timeout to prevent resetting transition prematurely.
     clearTimeout(isScrollingorResizing);
 
     // Restore transition after resize stops.
     isScrollingorResizing = setTimeout(() => {
-        aboutNavbarButton.style.transitionDuration = "0.4s";
-        experienceNavbarButton.style.transitionDuration = "0.4s";
-        projectsNavbarButton.style.transitionDuration = "0.4s";
-        blogNavbarButton.style.transitionDuration = "0.4s";
-        contactNavbarButton.style.transitionDuration = "0.4s";
     }, 100); // Small delay for smooth transition restoration
 }
 
@@ -238,11 +229,6 @@ function adjustOnResizeMobile() {
     // Find the elements needed to be modified on resizing.
     const titleTextUp = document.getElementById("title_text_up");
     const titleTextDown = document.getElementById("title_text_down");
-    const aboutNavbarButton = document.getElementById("about_navbar_button");
-    const experienceNavbarButton = document.getElementById("experience_navbar_button");
-    const projectsNavbarButton = document.getElementById("projects_navbar_button");
-    const blogNavbarButton = document.getElementById("blog_navbar_button");
-    const contactNavbarButton = document.getElementById("contact_navbar_button");
 
     // Recalculate font size based on viewport width.
     const initialFontSizeVW = 12.5;                                         // in vw
@@ -252,23 +238,11 @@ function adjustOnResizeMobile() {
     titleTextUp.style.fontSize = `${newFontSize}px`;
     titleTextDown.style.fontSize = `${newFontSize}px`;
 
-    // Change transition duration of navigation buttons while scrolling to stop button "lag".
-    aboutNavbarButton.style.transitionDuration = "0s";
-    experienceNavbarButton.style.transitionDuration = "0s";
-    projectsNavbarButton.style.transitionDuration = "0s";
-    blogNavbarButton.style.transitionDuration = "0s";
-    contactNavbarButton.style.transitionDuration = "0s";
-
     // Clear the existing timeout to prevent resetting transition prematurely.
     clearTimeout(isScrollingorResizing);
 
     // Restore transition after resize stops.
     isScrollingorResizing = setTimeout(() => {
-        aboutNavbarButton.style.transitionDuration = "0.4s";
-        experienceNavbarButton.style.transitionDuration = "0.4s";
-        projectsNavbarButton.style.transitionDuration = "0.4s";
-        blogNavbarButton.style.transitionDuration = "0.4s";
-        contactNavbarButton.style.transitionDuration = "0.4s";
     }, 100); // Small delay for smooth transition restoration
 }
 

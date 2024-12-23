@@ -3,6 +3,12 @@
     background-color: black;
 }
 
+/* The HTML body seems to come with an auto margin that needs to be removed.*/
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
 /* Initializing fonts. */
 @font-face {
     font-family: 'BungeeShade';
@@ -44,7 +50,8 @@
         position: fixed;
         right: 0;
         text-align: center;
-        width: 60vw;    
+        width: 60vw;  
+        z-index: 1000;  
     }
 
     /* The class for the title text. */
@@ -76,7 +83,6 @@
         outline-color: white;
         outline-style: solid;
         outline-width: 1px;
-        transition-duration: 0.4s;
         width: 8vw;
     }
 
@@ -95,14 +101,33 @@
     .navbar_button:hover {
         background-color: white;
         color: purple;
+        transition-duration: 0.4s;
     }
 
     /* The class for when a navigation button is clicked. */
     .navbar_button:active {
         background-color: darkgray;
         color: blue;
+        transition-duration: 0.4s;
     }
 
+    /* Class for the fixed clearance block for the navbar. */
+    .navbar_clearance_block_fixed {
+        color: black;
+        height: calc(50px + 27.5vw + 10px);
+        position: fixed;
+        width: 100%;
+        z-index: 999;
+    }
+
+    /* Class for the relative clearance block for the navbar, used to adjust content below. */
+    .navbar_clearance_block_relative {
+        color: black;
+        height: calc(50px + 27.5vw + 10px);
+        position: relative;
+        width: 100%;
+        z-index: 999;
+    }
 }
 
 /* For mobiles. */
@@ -122,7 +147,8 @@
         position: fixed;
         right: 0;
         text-align: center;
-        width: 90vw;    
+        width: 90vw;
+        z-index: 1000;    
     }
 
     /* The class for the title text. */
@@ -151,7 +177,6 @@
         outline-color: white;
         outline-style: solid;
         outline-width: 1px;
-        transition-duration: 0.4s;
         width: 12.5vw;
     }
 
@@ -173,21 +198,43 @@
     /* The class to declare hovering behaviour on navigation buttons. */
     .navbar_button:hover {
         background-color: white;
+        transition-duration: 0.4s;
     }
     
     /* Class to alter the navbar button icon color when hovering over the button. */
     .navbar_button:hover .navbar_button_image{
-    filter: brightness(0) saturate(100%) invert(7%) sepia(86%) saturate(5425%) hue-rotate(296deg) brightness(109%) contrast(107%);
+        filter: brightness(0) saturate(100%) invert(7%) sepia(86%) saturate(5425%) hue-rotate(296deg) brightness(109%) contrast(107%);
+        transition-duration: 0.4s;
     }
 
     /* The class for when a navigation button is clicked. */
     .navbar_button:active {
         background-color: darkgray;
+        transition-duration: 0.4s;
     }
 
     /* Class to alter the navbar button icon color when clicking the button. */
     .navbar_button:active .navbar_button_image{
         filter: brightness(0) saturate(100%) invert(10%) sepia(99%) saturate(5636%) hue-rotate(244deg) brightness(98%) contrast(151%);
+        transition-duration: 0.4s;
+    }
+
+    /* Class for the fixed clearance block for the navbar. */
+    .navbar_clearance_block_fixed {
+        color: black;
+        height: calc(25px + 65vw + 10px);
+        position: fixed;
+        width: 100%;
+        z-index: 999;
+    }
+
+    /* Class for the relative clearance block for the navbar, used to adjust content below. */
+    .navbar_clearance_block_relative {
+        color: black;
+        height: calc(25px + 65vw + 10px);
+        position: relative;
+        width: 100%;
+        z-index: 999;
     }
 
 }
