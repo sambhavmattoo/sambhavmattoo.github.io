@@ -1,8 +1,8 @@
 // Variable for scrolling or resizing timeout.
 let isScrollingorResizing;
 
-// Funtion to control scrolling behaviour.
-function adjustOnScrollDesktop() {
+// Funtion to control scrolling behaviour for Desktop version.
+function adjustOnScrollNavbarDesktop() {
 
     // Find the elements needed to be modified on scrolling.
     const titleNavbar = document.getElementById("title_navbar");
@@ -104,8 +104,8 @@ function adjustOnScrollDesktop() {
 
 }
 
-// Funtion to control scrolling behaviour.
-function adjustOnScrollMobile() {
+// Funtion to control scrolling behaviour for Mobile version.
+function adjustOnScrollNavbarMobile() {
 
     // Find the elements needed to be modified on scrolling.
     const titleNavbar = document.getElementById("title_navbar");
@@ -192,11 +192,11 @@ function adjustOnScrollMobile() {
 
 }
 
-// Function to control resizing behaviour.
-function adjustOnResizeDesktop() {
+// Function to control resizing behaviour for Desktop version.
+function adjustOnResizeNavbarDesktop() {
 
     // Call adjustOnScroll to recalculate everything.
-    adjustOnScrollDesktop();
+    adjustOnScrollNavbarDesktop();
     
     // Find the elements needed to be modified on resizing.
     const titleTextUp = document.getElementById("title_text_up");
@@ -220,11 +220,11 @@ function adjustOnResizeDesktop() {
     }, 100); // Small delay for smooth transition restoration
 }
 
-// Function to control resizing behaviour.
-function adjustOnResizeMobile() {
+// Function to control resizing behaviour for Mobile version.
+function adjustOnResizeNavbarMobile() {
 
     // Call adjustOnScroll to recalculate everything.
-    adjustOnScrollMobile();
+    adjustOnScrollNavbarMobile();
     
     // Find the elements needed to be modified on resizing.
     const titleTextUp = document.getElementById("title_text_up");
@@ -246,40 +246,531 @@ function adjustOnResizeMobile() {
     }, 100); // Small delay for smooth transition restoration
 }
 
-// Main function to launch any js animations. Divided for mobile and desktop versions.
+// Main function to launch any main .js animations. Divided for mobile and desktop versions.
 function mainAnimations() {
 
     // Desktop version.
     if (window.innerWidth > 600) {
         // Initial resizing to stop resize lag.
-        adjustOnResizeDesktop();
+        adjustOnResizeNavbarDesktop();
         // Attach scroll and resize event listeners.
-        window.removeEventListener("scroll", adjustOnScrollMobile);
-        window.removeEventListener("resize", adjustOnResizeMobile);
-        window.addEventListener("scroll", adjustOnScrollDesktop);
-        window.addEventListener("resize", adjustOnResizeDesktop);
+        window.removeEventListener("scroll", adjustOnScrollNavbarMobile);
+        window.removeEventListener("resize", adjustOnResizeNavbarMobile);
+        window.addEventListener("scroll", adjustOnScrollNavbarDesktop);
+        window.addEventListener("resize", adjustOnResizeNavbarDesktop);
     }
 
     // Mobile version. 
     else {
         // Initial resizing to stop resize lag.
-        adjustOnResizeMobile();
+        adjustOnResizeNavbarMobile();
         // Attach scroll and resize event listeners.
-        window.removeEventListener("scroll", adjustOnScrollDesktop);
-        window.removeEventListener("resize", adjustOnResizeDesktop);
-        window.addEventListener("scroll", adjustOnScrollMobile);
-        window.addEventListener("resize", adjustOnResizeMobile);
+        window.removeEventListener("scroll", adjustOnScrollNavbarDesktop);
+        window.removeEventListener("resize", adjustOnResizeNavbarDesktop);
+        window.addEventListener("scroll", adjustOnScrollNavbarMobile);
+        window.addEventListener("resize", adjustOnResizeNavbarMobile);
     } 
 
 }
 
-window.addEventListener("resize", mainAnimations)
-window.addEventListener("scroll", mainAnimations)
+// Function for title text appearing and growing to it's final size for Desktop version.
+function titleTextPageLoadDesktop() {
 
-// Trigger initial adjustment on page load
-mainAnimations();
+    // Find the elements needed to be animated.
+    const titleTextUp = document.getElementById("title_text_up");
+    const titleTextDown = document.getElementById("title_text_down");
+
+    // Ensure initial styles for smooth transition (in case they are not set).
+    titleTextUp.style.opacity = "0";
+    titleTextUp.style.fontSize = "0px";
+    titleTextUp.style.lineHeight = "0px";
+    titleTextDown.style.opacity = "0";
+    titleTextDown.style.fontSize = "0px";
+    titleTextDown.style.lineHeight = "0px";
+
+    // Set a delay of 0.5 seconds before starting the animation.
+    setTimeout(() => {
+        // Final values (initial state before animation begins).
+        const finalFontSizeVW = 7;                    // Final font size in vw.
+        const finalFontSizePX = 75;                   // Final font size in px.
+        const initialFontSize = 0;                    // Starting point for font size (transition from 0).
+        const initialOpacity = 0;                     // Starting point for opacity (transition from 0).
+        const finalOpacity = 1;                       // Final opacity (fully visible).
+        const finalLineHeightVW = 8;                  // Final line height in vw.
+        const finalLineHeightPX = 95;                 // Final line height in px.
+        const initialLineHeight = 0;                  // Starting point for line height (transition from 0).
+
+        // Duration of animation in seconds
+        const duration = 0.5;   // 0.5 seconds to animate the properties.
+        const steps = 60;       // 60 steps for the animation (1 step per frame at 60fps).
+        let step = 0;           // Track the progress of the animation.
+
+        // Start animation by gradually changing the properties over time.
+        const animationInterval = setInterval(() => {
+            let progress = step / steps; // progress value from 0 to 1.
+
+            // Calculate the updated opacity (from 0 to 1).
+            const updatedOpacity = initialOpacity + progress * (finalOpacity - initialOpacity);
+
+            // Calculate font size dynamically (transition from 0 to final size).
+            const vwFontSize = initialFontSize + (progress * (finalFontSizeVW - initialFontSize));
+            const pxFontSize = initialFontSize + (progress * (finalFontSizePX - initialFontSize));
+            const updatedFontSize = Math.max(vwFontSize * (window.innerWidth / 100), pxFontSize); // Adjust max(0, 75px)
+
+            // Calculate line height dynamically (transition from 0 to final size).
+            const vwLineHeight = initialLineHeight + (progress * (finalLineHeightVW - initialLineHeight));
+            const pxLineHeight = initialLineHeight + (progress * (finalLineHeightPX - initialLineHeight));
+            const updatedLineHeight = Math.max(vwLineHeight * (window.innerWidth / 100), pxLineHeight); // Adjust max(0, 95px)
+
+            // Apply the updated values to the elements.
+            titleTextUp.style.fontSize = `${updatedFontSize}px`;
+            titleTextUp.style.opacity = updatedOpacity.toFixed(2);
+            titleTextUp.style.lineHeight = `${updatedLineHeight}px`;
+
+            titleTextDown.style.fontSize = `${updatedFontSize}px`;
+            titleTextDown.style.opacity = updatedOpacity.toFixed(2);
+            titleTextDown.style.lineHeight = `${updatedLineHeight}px`;
+
+            // Increment the step to move to the next frame.
+            step++;
+
+            // If animation is interrupted by scrolling, go do the main animations.
+            if (window.scrollY != 0) {
+                mainAnimations();
+                clearInterval(animationInterval);
+            }
+
+            // Stop the animation after the set number of steps
+            if (step >= steps) {
+                // If animation is interrupted by scrolling, go do the main animations.
+                if (window.scrollY != 0) {
+                    mainAnimations();
+                }
+                else {
+                    // Final step - explicitly set the values to ensure precision.
+                    titleTextUp.style.opacity = "1";
+                    titleTextUp.style.fontSize = `${Math.max(7 * (window.innerWidth / 100), 75)}px`;
+                    titleTextUp.style.lineHeight = `${Math.max(8 * (window.innerWidth / 100), 95)}px`;
+
+                    titleTextDown.style.opacity = "1";
+                    titleTextDown.style.fontSize = `${Math.max(7 * (window.innerWidth / 100), 75)}px`;
+                    titleTextDown.style.lineHeight = `${Math.max(8 * (window.innerWidth / 100), 95)}px`;
+                }
+                clearInterval(animationInterval);
+            }
+        // Set the interval based on the duration and frame count.
+        }, duration * 1000 / steps);  
+    // Delay before starting the animation (10ms).
+    }, 10);
+
+}
+
+// Function for title text appearing and growing to it's final size for Mobile version.
+function titleTextPageLoadMobile() {
+
+    // Find the elements needed to be animated.
+    const titleTextUp = document.getElementById("title_text_up");
+    const titleTextDown = document.getElementById("title_text_down");
+
+    // Ensure initial styles for smooth transition (in case they are not set).
+    titleTextUp.style.opacity = "0";
+    titleTextUp.style.fontSize = "0px";
+    titleTextUp.style.lineHeight = "0px";
+    titleTextDown.style.opacity = "0";
+    titleTextDown.style.fontSize = "0px";
+    titleTextDown.style.lineHeight = "0px";
+
+    // Set a delay of 0.5 seconds before starting the animation.
+    setTimeout(() => {
+        // Final values (initial state before animation begins).
+        const finalFontSizeVW = 12.5;                 // Final font size in vw.
+        const initialFontSize = 0;                    // Starting point for font size (transition from 0).
+        const initialOpacity = 0;                     // Starting point for opacity (transition from 0).
+        const finalOpacity = 1;                       // Final opacity (fully visible).
+        const finalLineHeightVW = 15;                 // Final line height in vw.
+        const initialLineHeight = 0;                  // Starting point for line height (transition from 0).
+
+        // Duration of animation in seconds
+        const duration = 0.5;   // 0.5 seconds to animate the properties.
+        const steps = 60;       // 60 steps for the animation (1 step per frame at 60fps).
+        let step = 0;           // Track the progress of the animation.
+
+        // Start animation by gradually changing the properties over time.
+        const animationInterval = setInterval(() => {
+            let progress = step / steps; // progress value from 0 to 1.
+
+            // Calculate the updated opacity (from 0 to 1).
+            const updatedOpacity = initialOpacity + progress * (finalOpacity - initialOpacity);
+
+            // Calculate font size dynamically (transition from 0 to final size).
+            const updatedFontSize = (initialFontSize + (progress * (finalFontSizeVW - initialFontSize))) * (window.innerWidth / 100);
+
+            // Calculate line height dynamically (transition from 0 to final size).
+            const updatedLineHeight = (initialLineHeight + (progress * (finalLineHeightVW - initialLineHeight))) * (window.innerWidth / 100);
+
+            // Apply the updated values to the elements.
+            titleTextUp.style.fontSize = `${updatedFontSize}px`;
+            titleTextUp.style.opacity = updatedOpacity.toFixed(2);
+            titleTextUp.style.lineHeight = `${updatedLineHeight}px`;
+
+            titleTextDown.style.fontSize = `${updatedFontSize}px`;
+            titleTextDown.style.opacity = updatedOpacity.toFixed(2);
+            titleTextDown.style.lineHeight = `${updatedLineHeight}px`;
+
+            // Increment the step to move to the next frame.
+            step++;
+
+            // If animation is interrupted by scrolling, go do the main animations.
+            if (window.scrollY != 0) {
+                mainAnimations();
+                clearInterval(animationInterval);
+            }
+
+            // Stop the animation after the set number of steps
+            if (step >= steps) {
+                // If animation is interrupted by scrolling, go do the main animations.
+                if (window.scrollY != 0) {
+                    mainAnimations();
+                }
+                else {
+                    // Final step - explicitly set the values to ensure precision.
+                    titleTextUp.style.opacity = "1";
+                    titleTextUp.style.fontSize = `12.5vw`;
+                    titleTextUp.style.lineHeight = `15vw`;
+
+                    titleTextDown.style.opacity = "1";
+                    titleTextDown.style.fontSize = `12.5vw`;
+                    titleTextDown.style.lineHeight = `15vw`;
+                }
+                clearInterval(animationInterval);
+            }
+        // Set the interval based on the duration and frame count.
+        }, duration * 1000 / steps);  
+    // Delay before starting the animation (10ms).
+    }, 10);
+
+}
+
+// Function for about section image appearing and growing to it's final size for Desktop version.
+function aboutImagePageLoadDesktop() {
+
+    // Find the elements needed to be animated.
+    const aboutSectionImage = document.getElementById("about_section_image");
+
+    // Ensure initial styles for smooth transition (in case they are not set).
+    aboutSectionImage.style.width = "0vw";
+    aboutSectionImage.style.minWidth = "0px";
+    aboutSectionImage.style.marginLeft = "12.5vw";
+    aboutSectionImage.style.marginTop = "12.5vw";
+    aboutSectionImage.style.outlineWidth = "0px";
 
 
+    // Set a delay of 0.5 seconds before starting the animation.
+    setTimeout(() => {
+        // Final values (initial state before animation begins).
+        const finalWidth = 25;                      // in vw.
+        const initialWidth = 0;                     // in vw.
+        const finalMinWidth = 229.2;                // in px.
+        const initialMinWidth = 0;                  // in px.
+        const initialMarginLeft = 12.5;             // in vw.
+        const finalMarginLeft = 0;                  // in vw.
+        const initialMarginTop = 12.5;              // in vw.
+        const finalMarginTop = 0;                   // in vw.
+        const initialOutlineWidth = 0;              // in px.
+        const finalOutlineWidth = 2;                // in px.
 
 
+        // Duration of animation in seconds
+        const duration = 0.5;   // 0.5 seconds to animate the properties.
+        const steps = 60;       // 60 steps for the animation (1 step per frame at 60fps).
+        let step = 0;           // Track the progress of the animation.
 
+        // Start animation by gradually changing the properties over time.
+        const animationInterval = setInterval(() => {
+            let progress = step / steps; 
+
+            // Calculate the updated minimum width.
+            const updatedMinWidth = initialMinWidth + progress * (finalMinWidth - initialMinWidth);
+
+            // Calculate width dynamically (transition from 0 to final size).
+            const updatedWidth = (initialWidth + (progress * (finalWidth - initialWidth))) * (window.innerWidth / 100);
+
+            // Calculate margin left dynamically (transition from 12.5 to 0).
+            const updatedMarginLeft = initialMarginLeft - progress * (initialMarginLeft - finalMarginLeft);
+
+            // Calculate margin top dynamically (transition from 12.5 to 0).
+            const updatedMarginTop = initialMarginTop - progress * (initialMarginTop - finalMarginTop);
+
+            // Calculate outline width dynamically (transition from 0 to 2).
+            const updatedOutlineWidth = initialOutlineWidth + progress * (finalOutlineWidth - initialOutlineWidth);
+
+            // Apply the updated values to the elements.
+            aboutSectionImage.style.width = `${updatedWidth}px`;
+            aboutSectionImage.style.minWidth = `${updatedMinWidth}px`;
+            aboutSectionImage.style.marginLeft = `${updatedMarginLeft}vw`;
+            aboutSectionImage.style.marginTop = `${updatedMarginTop}vw`;
+            aboutSectionImage.style.outlineWidth = `${updatedOutlineWidth}px`;
+
+            // Increment the step to move to the next frame.
+            step++;
+
+            // Stop the animation after the set number of steps
+            if (step >= steps) {
+                
+                // Final step - explicitly set the values to ensure precision.
+                aboutSectionImage.style.width = "25vw";
+                aboutSectionImage.style.minWidth = "229.2px";
+                aboutSectionImage.style.marginLeft = "0vw";
+                aboutSectionImage.style.marginTop = "0vw";
+                aboutSectionImage.style.outlineWidth = "2px";
+
+                clearInterval(animationInterval);
+            }
+        // Set the interval based on the duration and frame count.
+        }, duration * 1000 / steps);  
+    // Delay before starting the animation (10ms).
+    }, 10);
+
+}
+
+// Function for about section image appearing and growing to it's final size for Mobile version.
+function aboutImagePageLoadMobile() {
+
+    // Find the elements needed to be animated.
+    const aboutSectionImage = document.getElementById("about_section_image");
+
+    // Ensure initial styles for smooth transition (in case they are not set).
+    aboutSectionImage.style.width = "0vw";
+    aboutSectionImage.style.marginLeft = "40vw";
+    aboutSectionImage.style.marginTop = "40vw";
+    aboutSectionImage.style.outlineWidth = "0px";
+
+
+    // Set a delay of 0.5 seconds before starting the animation.
+    setTimeout(() => {
+        // Final values (initial state before animation begins).
+        const finalWidth = 80;                      // in vw.
+        const initialWidth = 0;                     // in vw.
+        const initialMarginLeft = 40;               // in vw.
+        const finalMarginLeft = 2.5;                // in vw.
+        const initialMarginTop = 40;                // in vw.
+        const finalMarginTop = 5;                   // in vw.
+        const initialOutlineWidth = 0;              // in px.
+        const finalOutlineWidth = 2;                // in px.
+
+
+        // Duration of animation in seconds
+        const duration = 0.5;   // 0.5 seconds to animate the properties.
+        const steps = 60;       // 60 steps for the animation (1 step per frame at 60fps).
+        let step = 0;           // Track the progress of the animation.
+
+        // Start animation by gradually changing the properties over time.
+        const animationInterval = setInterval(() => {
+            let progress = step / steps; 
+
+            // Calculate width dynamically (transition from 0 to final size).
+            const updatedWidth = (initialWidth + (progress * (finalWidth - initialWidth))) * (window.innerWidth / 100);
+
+            // Calculate margin left dynamically (transition from 12.5 to 0).
+            const updatedMarginLeft = initialMarginLeft - progress * (initialMarginLeft - finalMarginLeft);
+
+            // Calculate margin top dynamically (transition from 12.5 to 0).
+            const updatedMarginTop = initialMarginTop - progress * (initialMarginTop - finalMarginTop);
+
+            // Calculate outline width dynamically (transition from 0 to 2).
+            const updatedOutlineWidth = initialOutlineWidth + progress * (finalOutlineWidth - initialOutlineWidth);
+
+            // Apply the updated values to the elements.
+            aboutSectionImage.style.width = `${updatedWidth}px`;
+            aboutSectionImage.style.marginLeft = `${updatedMarginLeft}vw`;
+            aboutSectionImage.style.marginTop = `${updatedMarginTop}vw`;
+            aboutSectionImage.style.outlineWidth = `${updatedOutlineWidth}px`;
+
+            // Increment the step to move to the next frame.
+            step++;
+
+            // Stop the animation after the set number of steps
+            if (step >= steps) {
+                
+                // Final step - explicitly set the values to ensure precision.
+                aboutSectionImage.style.width = "80vw";
+                aboutSectionImage.style.marginLeft = "2.5vw";
+                aboutSectionImage.style.marginTop = "5vw";
+                aboutSectionImage.style.outlineWidth = "2px";
+
+                clearInterval(animationInterval);
+            }
+        // Set the interval based on the duration and frame count.
+        }, duration * 1000 / steps);  
+    // Delay before starting the animation (10ms).
+    }, 10);
+
+}
+
+// Function for about section image appearing and growing to it's final size for both versions in a single function.
+function aboutImagePageLoad() {
+    
+    // Desktop version
+    if (window.innerWidth > 600) {
+        aboutImagePageLoadDesktop();
+    }
+
+    // Mobile version
+    else {
+        aboutImagePageLoadMobile();
+    }
+
+}
+
+// Function to control resizing behaviour for About section image for Desktop version.
+function adjustOnResizeAboutSectionImageDesktop() {
+    
+    // Find the elements needed to be modified on resizing.
+    const aboutSectionImage = document.getElementById("about_section_image");
+
+    // Apply dynamic font size to title text.
+    aboutSectionImage.style.width = "25vw";
+    aboutSectionImage.style.minWidth = "229.2px";
+    aboutSectionImage.style.marginLeft = "0vw";
+    aboutSectionImage.style.marginTop = "0vw";
+    aboutSectionImage.style.outlineWidth = "2px";
+
+    // Clear the existing timeout to prevent resetting transition prematurely.
+    clearTimeout(isScrollingorResizing);
+
+    // Restore transition after resize stops.
+    isScrollingorResizing = setTimeout(() => {
+    }, 100); // Small delay for smooth transition restoration
+}
+
+// Function to control resizing behaviour for About section image for Desktop version.
+function adjustOnResizeAboutSectionImageMobile() {
+    
+    // Find the elements needed to be modified on resizing.
+    const aboutSectionImage = document.getElementById("about_section_image");
+
+    // Apply dynamic font size to title text.
+    aboutSectionImage.style.width = "80vw";
+    aboutSectionImage.style.minWidth = "0px";
+    aboutSectionImage.style.marginLeft = "2.5vw";
+    aboutSectionImage.style.marginTop = "5vw";
+    aboutSectionImage.style.outlineWidth = "2px";
+
+    // Clear the existing timeout to prevent resetting transition prematurely.
+    clearTimeout(isScrollingorResizing);
+
+    // Restore transition after resize stops.
+    isScrollingorResizing = setTimeout(() => {
+    }, 100); // Small delay for smooth transition restoration
+}
+
+// Function to check if About section image is resizing alright.
+function checkResizeAboutSectionImage() {
+
+    // Desktop version.
+    if (window.innerWidth > 600) {
+        // Attach resize event listeners.
+        window.removeEventListener("resize", adjustOnResizeAboutSectionImageMobile);
+        window.addEventListener("resize", adjustOnResizeAboutSectionImageDesktop);
+        adjustOnResizeAboutSectionImageDesktop();
+    }
+
+    // Mobile version. 
+    else {
+        // Attach resize event listeners.
+        window.removeEventListener("resize", adjustOnResizeAboutSectionImageDesktop);
+        window.addEventListener("resize", adjustOnResizeAboutSectionImageMobile);
+        adjustOnResizeAboutSectionImageMobile();
+    } 
+
+}
+
+// Function for generally creating a typewriter effect for some text and some elementID in which that text goes when the page loads.
+function typewriterPageLoad(text, elementID, typeSpeed = 100, scrollUp = 20, typeIndex = 0, typePosition = 0) {
+    var typeContents = '';
+    var typeRow = Math.max(0, typeIndex - scrollUp);
+    var element = document.getElementById(elementID);
+  
+    // Add all lines up to the current line being typed.
+    while (typeRow < typeIndex) {
+        typeContents += text[typeRow++] + '<br />';
+    }
+  
+    // Ensure `text[typeIndex]` is valid before accessing substring.
+    if (text[typeIndex]) {
+        // Add the current line with the underscore (`_`) while typing.
+        element.innerHTML = typeContents + text[typeIndex].substring(0, typePosition) + "_";
+  
+        // If we've finished typing the line, remove the underscore and move to the next line.
+        if (typePosition++ == text[typeIndex].length) {
+            setTimeout(function() {
+            element.innerHTML = typeContents + text[typeIndex];
+            typePosition = 0;
+            typeIndex++;
+            if (typeIndex < text.length) {
+                // Continue to the next line after a small delay.
+                setTimeout(function() {
+                typewriterPageLoad(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition);  // Recursive call.
+                }, 500);
+            }
+            }, 500);
+        } 
+        
+        // Continue typing the current line.
+        else {
+            setTimeout(function() {
+                typewriterPageLoad(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition);  // Recursive call.
+            }, typeSpeed);
+        }
+    }
+}
+
+// Function for all animations on page load.
+function pageLoadAnimations() {
+
+    // Desktop version.
+    if (window.innerWidth > 600 && window.scrollY == 0) {
+        titleTextPageLoadDesktop();
+    }
+
+    // Mobile version.
+    else if (window.innerWidth <= 600 && window.scrollY == 0) {
+        titleTextPageLoadMobile();
+    }
+
+    var aboutSectionHeadingText = new Array("About");
+    
+    var aboutSectionText = new Array(
+        "Hello world! My name is Sambhav. I'm the human in the pic you just saw (@ 23 y.o. lolz).",
+        " ",
+		"I'm an engineer and I have worked in comp. bio., medical devices, software dev., chip design and automation in the past.",
+        " ",
+		"I'm interested in neurotech., indie game dev., volunteering and working out. I also like to read a lot (especially philosophy) and learn new languages.",
+		" ",		
+        "Apart from all that I sketch stuff I find visually interesting, meditate and listen to german industrial metal.", 
+        " ",
+		"Hope you like my webpage!",
+        " ", 
+		"UwU"
+    );
+
+    setTimeout(function() {
+        typewriterPageLoad(aboutSectionHeadingText, "about_section_heading"); 
+        setTimeout(function() {
+            aboutImagePageLoad();
+            window.addEventListener("resize", checkResizeAboutSectionImage);
+            setTimeout(function() {
+                typewriterPageLoad(aboutSectionText, "about_section_text", typeSpeed = 50);
+            }, 1000); 
+        }, 1000);
+    }, 1000);
+     
+
+}
+
+// Ensure pageLoadAnimations is only executed once the page is fully loaded.
+window.addEventListener("load", pageLoadAnimations);
+
+// Adjust animations on resize or scroll.
+window.addEventListener("resize", mainAnimations);
+window.addEventListener("scroll", mainAnimations);
