@@ -1,6 +1,7 @@
 /* The main class for the page. */
-* {
+html {
     background-color: black;
+    scroll-behavior: smooth;
 }
 
 /* The HTML body seems to come with an auto margin that needs to be removed.*/
@@ -65,7 +66,6 @@ body {
         position: relative;
         top: 2.5vw;
         text-align: center;
-
     }
 
     /* The class for each of the navigation buttons. */
@@ -114,7 +114,7 @@ body {
 
     /* Class for the fixed clearance block for the navbar. */
     .navbar_clearance_block_fixed {
-        color: black;
+        background-color: black;
         height: calc(50px + max(27.5vw, 315px) + 10px);
         position: fixed;
         width: 100%;
@@ -123,7 +123,7 @@ body {
 
     /* Class for the relative clearance block for the navbar, used to adjust content below. */
     .navbar_clearance_block_relative {
-        color: black;
+        background-color: black;
         height: calc(50px + max(27.5vw, 315px) + 10px);
         position: relative;
         width: 100%;
@@ -132,7 +132,7 @@ body {
 
     /* The class for the whole About section. */
     .about_section {
-        margin: 5vw auto;
+        margin: max(5vw, 50px) auto;
         min-width: 504.2px;
         width: 55vw;
     }
@@ -202,8 +202,9 @@ body {
         background: rgba(33, 33, 33, 0);
         color: yellowgreen;
         font-family: "BungeeShade";
-        font-size: 12.5vw;
-        line-height: 15vw;
+        font-size: 0vw;
+        line-height: 0vw;
+        opacity: 0;
         position: relative;
         top: 7.5vw;
         text-align: center;
@@ -267,7 +268,7 @@ body {
 
     /* Class for the fixed clearance block for the navbar. */
     .navbar_clearance_block_fixed {
-        color: black;
+        background-color: black;
         height: calc(25px + 65vw + 10px);
         position: fixed;
         width: 100%;
@@ -276,7 +277,7 @@ body {
 
     /* Class for the relative clearance block for the navbar, used to adjust content below. */
     .navbar_clearance_block_relative {
-        color: black;
+        background-color: black;
         height: calc(25px + 65vw + 10px);
         position: relative;
         width: 100%;
@@ -285,7 +286,7 @@ body {
 
     /* The class for the whole About section. */
     .about_section {
-        margin: 10vw auto;
+        margin: max(10vw, 50px) auto;
         width: 85vw;
     }
 

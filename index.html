@@ -23,6 +23,11 @@
 		<!-- Initializing the main .css file. -->
 		<link rel = "stylesheet" href = "css/style_main.css">
 
+		<!-- Initializing the .css file to be used when Javascript isn't enabled. -->
+		<noscript>
+			<link rel="stylesheet" href="css/style_main_noscript.css">
+		</noscript>
+
 		<!-- Initializing the main .js script. -->
 		<script src = "js/script_main.js"></script>
 
@@ -96,13 +101,33 @@
 		<div class = "about_section" id = "about_section">
 
 			<!-- The heading for the section. -->
-			<div class = "about_section_heading" id = "about_section_heading"></div>
+			<div class = "about_section_heading" id = "about_section_heading">
+				<!-- Heading is displayed here if Javascript is disabled, but is handled by script otherwise. -->
+				<noscript>
+					About
+				</noscript>
+			</div>
 
 			<!-- The image for the section. -->
 			<img src = "assets/images/about.jpg" class = "about_section_image" id = "about_section_image"> 
 			
 			<!-- The text for the section. -->
-			<div class = "about_section_text" id = "about_section_text"></div>
+			<div class = "about_section_text" id = "about_section_text">
+				<!-- Text is displayed here if Javascript is disabled, but is handled by script otherwise. -->
+				<noscript>
+					Hello world! My name is Sambhav. I'm the human in the pic you just saw (@ 23 y.o. lulz).
+					<br><br>
+					I'm an engineer and I have worked in comp. bio., medical devices, software dev., chip design and automation in the past.
+					<br><br>
+					I'm interested in neurotech., indie game dev., volunteering and working out. I also like to read a lot (especially philosophy) and learn new languages.
+					<br><br>		
+					Apart from all that I sketch stuff I find visually interesting, meditate and listen to german industrial metal.
+					<br><br>
+					Hope you like my webpage!
+					<br><br> 
+					UwU
+				</noscript>
+			</div>
 
 		</div>
 		<br>

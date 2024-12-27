@@ -1,0 +1,65 @@
+@media screen and (min-width: 601px) {
+
+    /* The class for the combined title and navigation bar. */
+    .title_navbar {
+        position: relative; 
+    }
+
+    /* The class for the title text. */
+    .title_text {
+        font-size: max(7vw, 75px);
+        line-height: max(8vw, 95px);
+        opacity: 1;
+    }
+
+    /* Class for the fixed clearance block for the navbar, which is removed when there is no Javascript enabled. */
+    .navbar_clearance_block_fixed {
+        display: none;
+    }
+
+    /* Class for the relative clearance block for the navbar, which is removed when there is no Javascript enabled. */
+    .navbar_clearance_block_relative {
+        display: none;
+    }
+
+    /* The class for the About section image. */
+    .about_section_image {
+        min-width: 229.2px;
+        outline-width: 2px;
+        width: 25vw;
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+
+    /* The class for the combined title and navigation bar. */
+    .title_navbar {
+        position: relative; 
+    }
+
+    /* The class for the title text. */
+    .title_text {
+        font-size: 12.5vw;
+        line-height: 15vw;
+        opacity: 1;
+    }
+        
+    /* Class for the fixed clearance block for the navbar, which is removed when there is no Javascript enabled. */
+    .navbar_clearance_block_fixed {
+        display: none;
+    }
+
+    /* Class for the relative clearance block for the navbar, which is removed when there is no Javascript enabled. */
+    .navbar_clearance_block_relative {
+        display: none;
+    }
+
+    /* The class for the About section image. */
+    .about_section_image {
+        min-width: 0px;
+        outline-width: 2px;
+        width: 80vw;
+    }
+
+}

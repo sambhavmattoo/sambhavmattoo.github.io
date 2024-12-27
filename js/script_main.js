@@ -36,11 +36,11 @@ function adjustOnScrollNavbarDesktop() {
     const initialNavbarButtonMarginTop = 5;         // in vw
     const finalNavbarButtonMarginTop = 0.6;         // in vw
     const pxNavbarButtonMarginTop = 10;             // in px
-    const initialNavbarClearanceHeightVW = 27.5     // in vw
-    const initialNavbarClearanceHeightPX = 60       // in px
-    const finalNavbarClearanceHeightVW = 5.25       // in vw
-    const finalNavbarClearanceHeightPX = 20         // in px
-    const diffNavbarClearanceHeight = 5.5           // in vw
+    const initialNavbarClearanceHeightVW = 27.5;    // in vw
+    const initialNavbarClearanceHeightPX = 60;      // in px
+    const finalNavbarClearanceHeightVW = 5.25;      // in vw
+    const finalNavbarClearanceHeightPX = 20;        // in px
+    const diffNavbarClearanceHeight = 5.5;          // in vw
 
     // Maximum scroll threshold for transformation.
     const maxScroll = 50; // Adjust for smoothness
@@ -451,6 +451,19 @@ function titleTextPageLoadMobile() {
 
 }
 
+// Function for title text appearing and growing to it's final size for both versions in a single function.
+function titleTextPageLoad() {
+    // Desktop version.
+    if (window.innerWidth > 600 && window.scrollY == 0) {
+        titleTextPageLoadDesktop();
+    }
+
+    // Mobile version.
+    else if (window.innerWidth <= 600 && window.scrollY == 0) {
+        titleTextPageLoadMobile();
+    }
+}
+
 // Function for about section image appearing and growing to it's final size for Desktop version.
 function aboutImagePageLoadDesktop() {
 
@@ -686,7 +699,7 @@ function checkResizeAboutSectionImage() {
 }
 
 // Function for generally creating a typewriter effect for some text and some elementID in which that text goes when the page loads.
-function typewriterPageLoad(text, elementID, typeSpeed = 100, scrollUp = 20, typeIndex = 0, typePosition = 0) {
+function typewriterText(text, elementID, typeSpeed = 100, scrollUp = 20, typeIndex = 0, typePosition = 0) {
     var typeContents = '';
     var typeRow = Math.max(0, typeIndex - scrollUp);
     var element = document.getElementById(elementID);
@@ -710,7 +723,7 @@ function typewriterPageLoad(text, elementID, typeSpeed = 100, scrollUp = 20, typ
             if (typeIndex < text.length) {
                 // Continue to the next line after a small delay.
                 setTimeout(function() {
-                typewriterPageLoad(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition);  // Recursive call.
+                typewriterText(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition);  // Recursive call.
                 }, 500);
             }
             }, 500);
@@ -719,7 +732,7 @@ function typewriterPageLoad(text, elementID, typeSpeed = 100, scrollUp = 20, typ
         // Continue typing the current line.
         else {
             setTimeout(function() {
-                typewriterPageLoad(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition);  // Recursive call.
+                typewriterText(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition);  // Recursive call.
             }, typeSpeed);
         }
     }
@@ -728,20 +741,10 @@ function typewriterPageLoad(text, elementID, typeSpeed = 100, scrollUp = 20, typ
 // Function for all animations on page load.
 function pageLoadAnimations() {
 
-    // Desktop version.
-    if (window.innerWidth > 600 && window.scrollY == 0) {
-        titleTextPageLoadDesktop();
-    }
-
-    // Mobile version.
-    else if (window.innerWidth <= 600 && window.scrollY == 0) {
-        titleTextPageLoadMobile();
-    }
-
     var aboutSectionHeadingText = new Array("About");
     
     var aboutSectionText = new Array(
-        "Hello world! My name is Sambhav. I'm the human in the pic you just saw (@ 23 y.o. lolz).",
+        "Hello world! My name is Sambhav. I'm the human in the pic you just saw (@ 23 y.o. lulz).",
         " ",
 		"I'm an engineer and I have worked in comp. bio., medical devices, software dev., chip design and automation in the past.",
         " ",
@@ -755,22 +758,60 @@ function pageLoadAnimations() {
     );
 
     setTimeout(function() {
-        typewriterPageLoad(aboutSectionHeadingText, "about_section_heading"); 
+        titleTextPageLoad();
         setTimeout(function() {
-            aboutImagePageLoad();
-            window.addEventListener("resize", checkResizeAboutSectionImage);
+            typewriterText(aboutSectionHeadingText, "about_section_heading"); 
             setTimeout(function() {
-                typewriterPageLoad(aboutSectionText, "about_section_text", typeSpeed = 50);
-            }, 1000); 
+                aboutImagePageLoad();
+                window.addEventListener("resize", checkResizeAboutSectionImage);
+                setTimeout(function() {
+                    checkResizeAboutSectionImage();
+                    typewriterText(aboutSectionText, "about_section_text", typeSpeed = 50);
+                }, 1000); 
+            }, 1000);
         }, 1000);
-    }, 1000);
+    }, 500);
      
 
 }
 
-// Ensure pageLoadAnimations is only executed once the page is fully loaded.
-window.addEventListener("load", pageLoadAnimations);
+// This function will cause scrolling to a specified div element on the page. 
+function smoothScrollToDivElement(buttonId, targetId) {
+    // Attach an event listener to the button.
+    document.getElementById(buttonId).addEventListener('click', function (event) {
+        event.preventDefault();  // Prevent default button behavior
+      
+        // Get the target element to scroll to
+        const targetElement = document.getElementById(targetId);
+      
+        if (targetElement) {
+            // Get the current height of the navbar dynamically by its ID
+            var navbarHeight = document.getElementById('navbar_clearance_block_relative').offsetHeight;
+            console.log('navbarHeight:', navbarHeight);
 
-// Adjust animations on resize or scroll.
-window.addEventListener("resize", mainAnimations);
-window.addEventListener("scroll", mainAnimations);
+            var targetOffsetTop = targetElement.offsetTop;
+            console.log('targetOffsetTop:', targetOffsetTop);
+
+            var topValue = targetOffsetTop - navbarHeight;
+            console.log('topValue:', topValue);
+
+            // Adjust the scroll position by subtracting the navbar height
+            window.scrollTo({
+                top: topValue,
+                behavior: 'smooth'  // Enable smooth scrolling
+            });
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Ensure pageLoadAnimations is only executed once the page is fully loaded.
+    window.addEventListener("load", pageLoadAnimations);
+
+    // Adjust animations on resize or scroll.
+    window.addEventListener("resize", mainAnimations);
+    window.addEventListener("scroll", mainAnimations);
+
+    smoothScrollToDivElement('about_navbar_button', 'about_section');
+});
