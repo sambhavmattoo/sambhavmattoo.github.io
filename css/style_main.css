@@ -39,15 +39,16 @@ body {
     .title_navbar {
         background-color: rgb(33, 33, 33);
         border-radius: 2.5vw;
-        height: 27.5vw;
+        display: none;
+        height: 0px;
         left: 0;
         margin: 0 auto;
         margin-top: 50px;
-        min-height: 315px;
+        min-height: 0px;
         min-width: 550px;
         outline-color: white;
         outline-style: solid;
-        outline-width: 2px;
+        outline-width: 0px;
         position: fixed;
         right: 0;
         text-align: center;
@@ -73,18 +74,21 @@ body {
         background-color: rgb(33, 33, 33);
         border-radius: 1vw;
         color: white;
+        display: none;
         font-family: "VT323";
-        font-size: max(1.2vw, 12px);
-        height: 4vw;
-        margin-left: 1.25vw;
-        margin-right: 1.25vw;
+        font-size: 0px;
+        height: 0vw;
+        margin-left: 0vw;
+        margin-right: 0vw;
         margin-top: 5vw;
-        min-height: 45px;
-        min-width: 75px;
+        min-height: 0px;
+        min-width: 0px;
+        opacity: 0;
         outline-color: white;
         outline-style: solid;
-        outline-width: 2px;
-        width: 8vw;
+        outline-width: 0px;
+        padding: 0%;
+        width: 0vw;
     }
 
     /* Navbar button icons are deactivated in mobile version. */
@@ -110,6 +114,18 @@ body {
         background-color: darkgray;
         color: blue;
         transition-duration: 0.4s;
+    }
+
+    /* The class for a link contained in the button. This is used in case Javascript is disabled. */
+    .navbar_button_link {
+        align-items: center;
+        border-radius: inherit;
+        color: inherit;
+        display: inline-flex;
+        height: 100%;
+        justify-content: center;
+        text-decoration: none;
+        width: 100%;
     }
 
     /* Class for the fixed clearance block for the navbar. */
@@ -183,13 +199,14 @@ body {
     .title_navbar {
         background-color: rgb(33, 33, 33);
         border-radius: 2.5vw;
-        height: 65vw;
+        display: none;
+        height: 0vw;
         left: 0;
         margin: 0 auto;
         margin-top: 25px;
         outline-color: white;
         outline-style: solid;
-        outline-width: 2px;
+        outline-width: 0px;
         position: fixed;
         right: 0;
         text-align: center;
@@ -217,24 +234,27 @@ body {
         background-color: rgb(33, 33, 33);
         border-radius: 1vw;
         color: white;
-        height: 12.5vw;
-        margin-left: 1.25vw;
-        margin-right: 1.25vw;
+        display: none;
+        height: 0vw;
+        margin-left: 0vw;
+        margin-right: 0vw;
         margin-top: 15vw;
+        opacity: 0;
         outline-color: white;
         outline-style: solid;
-        outline-width: 2px;
-        width: 12.5vw;
+        outline-width: 0px;
+        padding: 0%;
+        width: 0vw;
     }
 
     /* The class for the navbar icons, which are used in mobile version.*/
     .navbar_button_image {
-        display: block;
         background-color: transparent;
         filter: invert(100%);
-        height: 7.5vw;
-        width: 7.5vw;
+        height: 0vw;
         margin: auto;
+        opacity: 0;
+        width: 0vw;
     }
 
     /* Navbar button text is deactivated in mobile version. */
@@ -264,6 +284,18 @@ body {
     .navbar_button:active .navbar_button_image{
         filter: brightness(0) saturate(100%) invert(10%) sepia(99%) saturate(5636%) hue-rotate(244deg) brightness(98%) contrast(151%);
         transition-duration: 0.4s;
+    }
+
+    /* The class for a link contained in the button. This is used in case Javascript is disabled. */
+    .navbar_button_link {
+        align-items: center;
+        border-radius: inherit;
+        color: inherit;
+        display: inline-flex;
+        height: 100%;
+        justify-content: center;
+        text-decoration: none;
+        width: 100%;
     }
 
     /* Class for the fixed clearance block for the navbar. */

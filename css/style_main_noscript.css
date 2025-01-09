@@ -2,7 +2,11 @@
 
     /* The class for the combined title and navigation bar. */
     .title_navbar {
-        position: relative; 
+        display: block;
+        height: 27.5vw;
+        min-height: 315px;
+        outline-width: 2px;
+        position: relative;
     }
 
     /* The class for the title text. */
@@ -10,6 +14,20 @@
         font-size: max(7vw, 75px);
         line-height: max(8vw, 95px);
         opacity: 1;
+    }
+    
+    /* The class for each of the navigation buttons. */
+    .navbar_button {
+        display: inline;
+        font-size: max(1.2vw, 12px);
+        height: 4vw;
+        margin-left: 1.25vw;
+        margin-right: 1.25vw;
+        min-height: 45px;
+        min-width: 75px;
+        opacity: 1;
+        outline-width: 2px;
+        width: 8vw;
     }
 
     /* Class for the fixed clearance block for the navbar, which is removed when there is no Javascript enabled. */
@@ -20,6 +38,12 @@
     /* Class for the relative clearance block for the navbar, which is removed when there is no Javascript enabled. */
     .navbar_clearance_block_relative {
         display: none;
+    }
+
+    /* The class for the whole About section. Using padding instead of margin in order to navigate effectively when there is no Javascript enabled. */
+    .about_section {
+        padding-top: max(5vw, 50px);
+        margin-top: 2px;
     }
 
     /* The class for the About section image. */
@@ -35,6 +59,10 @@
 
     /* The class for the combined title and navigation bar. */
     .title_navbar {
+        display: block;
+        height: 65vw;
+        min-height: 0px;
+        outline-width: 2px;
         position: relative; 
     }
 
@@ -43,6 +71,26 @@
         font-size: 12.5vw;
         line-height: 15vw;
         opacity: 1;
+    }
+
+    /* The class for each of the navigation buttons. */
+    .navbar_button {
+        display: inline;
+        height: 12.5vw;
+        margin-left: 1.25vw;
+        margin-right: 1.25vw;
+        margin-top: 15vw;
+        opacity: 1;
+        outline-width: 2px;
+        width: 12.5vw;
+    }
+
+    /* The class for the navbar icons, which are used in mobile version.*/
+    .navbar_button_image {
+        height: 7.5vw;
+        margin: auto;
+        opacity: 1;
+        width: 7.5vw;
     }
         
     /* Class for the fixed clearance block for the navbar, which is removed when there is no Javascript enabled. */
@@ -53,6 +101,12 @@
     /* Class for the relative clearance block for the navbar, which is removed when there is no Javascript enabled. */
     .navbar_clearance_block_relative {
         display: none;
+    }
+
+    /* The class for the whole About section. Using padding instead of margin in order to navigate effectively when there is no Javascript enabled. */
+    .about_section {
+        padding-top: max(10vw, 50px);
+        margin-top: 2px;
     }
 
     /* The class for the About section image. */
