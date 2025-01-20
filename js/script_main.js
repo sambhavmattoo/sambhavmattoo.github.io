@@ -5,6 +5,9 @@ let isScrollingorResizingTimeout;
 let isScrolling = false;
 let isResizing = false;
 
+// Flag to track if typing speed needs to be faster.
+let isTypingFaster = false;
+
 // To store all timeout IDs for navbar button animations.
 let navbarButtonTimeoutIDs = []; 
 
@@ -50,7 +53,7 @@ function adjustOnScrollNavbarDesktop() {
     const diffNavbarClearanceHeight = 5.5;          // in vw
 
     // Maximum scroll threshold for transformation.
-    const maxScroll = 25; // Adjust for smoothness
+    const maxScroll = 25;   // Adjust for smoothness.
 
     // Calculate scroll position.
     const scrollTop = window.scrollY;
@@ -148,7 +151,7 @@ function adjustOnScrollNavbarMobile() {
     const diffNavbarClearanceHeight = 20            // in vw
 
     // Maximum scroll threshold for transformation.
-    const maxScroll = 25; // Adjust for smoothness
+    const maxScroll = 25;   // Adjust for smoothness.
 
     // Calculate scroll position.
     const scrollTop = window.scrollY;
@@ -357,11 +360,11 @@ function titleNavbarPageLoadDesktop() {
         // Set a delay of 0.5 seconds before starting the animation.
         setTimeout(() => {
             // Final values (initial state before animation begins).
-            const finalHeight = 27.5;                       // Final height in vw
+            const finalHeight = 27.5;                       // Final height in vw.
             const initialHeight = 0;                        // Starting point for height (transition from 0).
-            const finalMinHeight = 315;                     // Final minimum height in px
+            const finalMinHeight = 315;                     // Final minimum height in px.
             const initialMinHeight = 0;                     // Starting point for minimum height (transition from 0).
-            const finalOutlineWidth = 2;                    // Final outline width in px
+            const finalOutlineWidth = 2;                    // Final outline width in px.
             const initialOutlineWidth = 0;                  // Starting point for outline width (transition from 0).
 
             let lastWidth = window.innerWidth;      // Store the initial width for resize detection.
@@ -412,7 +415,7 @@ function titleNavbarPageLoadDesktop() {
                     return; 
                 }
 
-                // Stop the animation after the set number of steps
+                // Stop the animation after the set number of steps.
                 if (step >= steps) {
 
                     // If animation is interrupted by scrolling, go do the main animations.
@@ -456,9 +459,9 @@ function titleNavbarPageLoadMobile() {
         setTimeout(() => {
 
             // Final values (initial state before animation begins).
-            const finalHeight = 65;                         // Final height in vw
+            const finalHeight = 65;                         // Final height in vw.
             const initialHeight = 0;                        // Starting point for height (transition from 0).
-            const finalOutlineWidth = 2;                    // Final outline width in px
+            const finalOutlineWidth = 2;                    // Final outline width in px.
             const initialOutlineWidth = 0;                  // Starting point for outline width (transition from 0).
 
             let lastWidth = window.innerWidth;      // Store the initial width for resize detection.
@@ -1342,47 +1345,231 @@ function checkResizeAboutSectionImage() {
 }
 
 // Function for generally creating a typewriter effect for some text and some elementID in which that text goes when the page loads.
-function typewriterText(text, elementID, typeSpeed = 100, scrollUp = 20, typeIndex = 0, typePosition = 0) {
+function typewriterText(text, elementID, typeSpeed = 100, scrollUp = 20, typeIndex = 0, typePosition = 0, maxTypeSpeed = 5) {
     var typeContents = '';
     var typeRow = Math.max(0, typeIndex - scrollUp);
     var element = document.getElementById(elementID);
-  
+
     // Add all lines up to the current line being typed.
     while (typeRow < typeIndex) {
         typeContents += text[typeRow++] + '<br />';
     }
-  
+
     // Ensure `text[typeIndex]` is valid before accessing substring.
     if (text[typeIndex]) {
         // Add the current line with the underscore (`_`) while typing.
         element.innerHTML = typeContents + text[typeIndex].substring(0, typePosition) + "_";
-  
+
+        // Use the faster typing speed if flag is set, otherwise use the normal typeSpeed
+        const currentTypingSpeed = isTypingFaster ? maxTypeSpeed : typeSpeed;
+        const currentNewlineSpeed = isTypingFaster ? maxTypeSpeed : 500;
+
+        // Listen for tab switching or screen clicks to speed up typing.
+        const handleVisibilityChange = () => {
+            if (document.hidden && !isTypingFaster) {
+                isTypingFaster = true;  // Set flag to use faster speed.
+            }
+        };
+      
+        const handleClick = () => {
+            if (!isTypingFaster) {
+                isTypingFaster = true;  // Set flag to use faster speed.
+            }
+        };
+
+        const handleTouchStart = () => {
+            if (!isTypingFaster) {
+                isTypingFaster = true;  // Set flag to use faster speed.
+            }
+        };
+
+        const handleTouchMove = () => {
+            if (!isTypingFaster) {
+                isTypingFaster = true;  // Set flag to use faster speed.
+            }
+        };
+
+        // Attach event listeners to detect tab switch or screen click.
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        document.addEventListener('click', handleClick);
+        document.addEventListener('touchstart', handleTouchStart);  // Listen for touch start.
+        document.addEventListener('touchmove', handleTouchMove);    // Listen for touch move (dragging/swiping).
+
         // If we've finished typing the line, remove the underscore and move to the next line.
-        if (typePosition++ == text[typeIndex].length) {
+        if (typePosition++ === text[typeIndex].length) {
             setTimeout(function() {
                 element.innerHTML = typeContents + text[typeIndex];
                 typePosition = 0;
                 typeIndex++;
-                if (typeIndex < text.length) {
 
-                    // Continue to the next line after a small delay.
+                // Clean up event listeners once typing for the current line is finished.
+                document.removeEventListener('visibilitychange', handleVisibilityChange);
+                document.removeEventListener('click', handleClick);
+                document.removeEventListener('touchstart', handleTouchStart);
+                document.removeEventListener('touchmove', handleTouchMove);
+
+                // Continue to the next line after a small delay.
+                if (typeIndex < text.length) {
                     setTimeout(function() {
-                        
-                    typewriterText(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition);  // Recursive call.
-                    
-                    }, 500);
+                        typewriterText(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition, maxTypeSpeed);  // Recursive call.
+                    }, currentNewlineSpeed);
                 }
 
-            }, 500);
+            }, currentNewlineSpeed);
         } 
         
-        // Continue typing the current line.
+        // Continue typing the current line with updated typing speed.
         else {
             setTimeout(function() {
-                typewriterText(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition);  // Recursive call.
-            }, typeSpeed);
+                typewriterText(text, elementID, typeSpeed, scrollUp, typeIndex, typePosition, maxTypeSpeed);  // Recursive call.
+            }, currentTypingSpeed);
         }
     }
+}
+
+// An animation that causes random flickering of a glowing title text.
+function randomFlicker(element_ids) {
+
+    // Define base minimum and maximum range for the flicker interval.
+    var baseMinRange = 2000;
+    var baseMaxRange = 4000;
+  
+    // Define additional random range that will be added to the base interval.
+    var randomMinRange = -500;
+    var randomMaxRange = 500;
+
+    // Calculate a base interval value by picking a random number within the base range.
+    var baseInterval = Math.floor(Math.random() * (baseMaxRange - baseMinRange + 1) - baseMinRange);
+
+    // Calculate a random interval by adding an additional random value to the base interval.
+    var randomInterval = baseInterval + Math.floor(Math.random() * (randomMaxRange - randomMinRange + 1) - randomMinRange);
+  
+    // Iterate over each element_id passed to the function.
+    element_ids.forEach(element_id => {
+        // Get the element by its ID and set the flicker interval via a CSS custom property.
+        const element = document.getElementById(element_id);
+        element.style.setProperty('--interval', `${randomInterval}ms`);
+
+        // Ensure the interval is adjusted each time the animation completes.
+        element.addEventListener('animationiteration', () => {
+            // Calculate a new random interval after the animation iteration ends.
+            var randomInterval = baseInterval + Math.floor(Math.random() * (randomMaxRange - randomMinRange + 1) - randomMinRange);
+
+            // Iterate over all elements again to adjust their flicker intervals.
+            element_ids.forEach(element_id => {
+                const element = document.getElementById(element_id);
+                element.style.setProperty('--interval', `${randomInterval}ms`);
+            });
+        });
+
+        // Fallback for older WebKit browsers.
+        element.addEventListener('webkitAnimationIteration', () => {
+            // Calculate a new random interval after the animation iteration ends.
+            var randomInterval = baseInterval + Math.floor(Math.random() * (randomMaxRange - randomMinRange + 1) - randomMinRange);
+
+            // Iterate over all elements again to adjust their flicker intervals.
+            element_ids.forEach(element_id => {
+                const element = document.getElementById(element_id);
+                element.style.setProperty('--interval', `${randomInterval}ms`);
+            });
+        });
+
+        // Fallback for older Firefox browsers
+        element.addEventListener('mozAnimationIteration', () => {
+            // Calculate a new random interval after the animation iteration ends.
+            var randomInterval = baseInterval + Math.floor(Math.random() * (randomMaxRange - randomMinRange + 1) - randomMinRange);
+
+            // Iterate over all elements again to adjust their flicker intervals.
+            element_ids.forEach(element_id => {
+                const element = document.getElementById(element_id);
+                element.style.setProperty('--interval', `${randomInterval}ms`);
+            });
+        });
+    });
+}
+
+// Function for a text scramble animation, to be applied to any element_id.
+function textScrambleAnimation(element_id) {
+    // Define the set of random characters for the scramble effect.
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    
+    // Define the pause time after each wave effect (3 seconds).
+    const pauseTime = 3000;
+    
+    // Define the interval time for each character change (30ms).
+    const scrambleSpeed = 30;
+    
+    // Get the target element by ID and its content.
+    const element = document.getElementById(element_id);
+    
+    // Get the text from the element and remove any underscore (_) completely.
+    const targetText = element.dataset.value || element.innerText;
+    const sanitizedText = targetText.replace("_", "");  // Remove the underscore.
+  
+    // Start the animation loop.
+    setInterval(() => {
+        // Reset the iteration to start a new wave effect.
+        let iteration = 0;
+        
+        // Start the scramble wave effect.
+        const waveInterval = setInterval(() => {
+            // Update the element's text by scrambling characters.
+            element.innerText = sanitizedText
+            .split("") // Split the text into individual characters.
+            .map((letter, index) => {
+                // If the current index is less than the iteration, keep the target letter.
+                if (index < iteration) {
+                    return sanitizedText[index];
+                }
+                
+                // Otherwise, replace with a random character.
+                return characters[Math.floor(Math.random() * 26)];
+            })
+            .join(""); // Join the array back into a string.
+    
+            // If all letters have been revealed, stop the scrambling effect.
+            if (iteration >= sanitizedText.length) {
+                clearInterval(waveInterval);
+        
+                // Show the original sanitized text (no underscore) for a 3-second pause.
+                setTimeout(() => {
+                    element.innerText = sanitizedText; // Reset the text to the version without underscore.
+                }, pauseTime); // Pause duration: 3 seconds.
+            }
+    
+            // Increment the iteration (slow reveal of the original text).
+            iteration += 1 / 3;
+        }, scrambleSpeed); // Scramble speed: 30ms per update.
+  
+    }, pauseTime + (sanitizedText.length * scrambleSpeed)); // Start the wave again after the pause time + wave duration.
+}
+
+// A function that slightly jiggles an image, drawing attention to it.
+function jiggleImage(element_id) {
+    // Get the image element by ID.
+    var image = document.getElementById(element_id);
+
+    // Define the pause time after each wave effect (3 seconds).
+    const pauseTime = 3000;
+
+    // Set the animation interval (runs every `pauseTime`).
+    setInterval(function() {
+
+        // Apply the first rotation to the left (-5deg).
+        image.style.transition = 'transform 0.2s ease';  // Add a smooth transition for the rotation.
+        image.style.transform = 'rotate(-2.5deg)';
+
+        // After 100ms, rotate to the right (5deg).
+        setTimeout(function() { 
+            image.style.transform = 'rotate(2.5deg)'; 
+        }, 100);
+
+        // After another 100ms, return to the original position (0deg).
+        setTimeout(function() { 
+            image.style.transform = 'rotate(0deg)'; 
+        }, 200);
+
+    }, pauseTime);  // Repeat every 3 seconds.
 }
 
 // Function for all animations on page load.
@@ -1393,9 +1580,9 @@ function pageLoadAnimations() {
     
     // Declare the text for the about section content.
     var aboutSectionText = new Array(
-        "Hello world! My name is Sambhav. I'm the human in the pic you just saw (it's a cool pic if you didn't).",
+        "Hello world! My name is Sambhav. I'm the human in the pic you just (hopefully) saw. My pronouns are he/him.",
         " ",
-		"I'm an engineer and I have worked in comp. bio., medical devices, software dev., chip design and automation in the past.",
+		"I'm an engineer and I have worked in comp. bio., medical devices, software dev. and chip design in the past.",
         " ",
 		"I'm interested in neurotech., software, volunteering and working out. I also like to read a lot (especially philosophy) and learn new languages.",
 		" ",		
@@ -1410,6 +1597,15 @@ function pageLoadAnimations() {
     window.addEventListener("scroll", handleNavbarButtonScrollOrResize);
     window.addEventListener("resize", handleNavbarButtonScrollOrResize);
 
+    // Calculate timing delays for each loading animation.
+    var load_time_1 = (window.scrollY != 0) ? 100 : 1000;
+    var load_time_2 = (window.scrollY != 0) ? 100 : 500;
+    var load_time_3 = 100;
+    var load_time_4 = (window.scrollY != 0) ? 500 : 3000;
+    var load_time_5 = 500;
+    var load_time_6 = 500;
+
+
     // Create a timed series of animations for the page load.
     setTimeout(function() {
 
@@ -1420,6 +1616,8 @@ function pageLoadAnimations() {
             // Start the animations for making the title text appear and grow to its final size.
             titleTextPageLoad();
             setTimeout(function() {
+
+                randomFlicker(['title_text_up', 'title_text_down']);
 
                 // Start the animations for making the navbar buttons appear and grow to their final size.
                 navbarButtonPageLoad();
@@ -1444,25 +1642,87 @@ function pageLoadAnimations() {
                         window.addEventListener("resize", checkResizeAboutSectionImage);
                         setTimeout(function() {
 
+                            textScrambleAnimation('about_section_heading');
+                            jiggleImage('about_section_image');
+
                             // Ensure the about section image is set to its default styles.
                             checkResizeAboutSectionImage();
 
                             // Start the animations to type out the about section text.
                             typewriterText(aboutSectionText, "about_section_text", typeSpeed = 50);
                         
-                        }, 1000); 
+                        }, load_time_6); 
 
-                    }, 1000);
+                    }, load_time_5);
 
-                }, 3500);
+                }, load_time_4);
 
-            }, 1000);
+            }, load_time_3);
 
-        }, 1000);
+        }, load_time_2);
 
-    }, 1000);
+    },  load_time_1);
 
 }
+
+// Function to cycle the tab title with a typewriter effect.
+function switchTitle() {
+    const titles = ["𝚂𝚊𝚖𝚋𝚑𝚊𝚟 𝙼𝚊𝚝𝚝𝚘𝚘", "𝙴𝚗𝚐𝚒𝚗𝚎𝚎𝚛", "𝙲𝚑𝚒𝚙 𝙳𝚎𝚜𝚒𝚐𝚗", "𝙲𝚘𝚖𝚙𝚞𝚝𝚊𝚝𝚒𝚘𝚗𝚊𝚕 𝙱𝚒𝚘𝚕𝚘𝚐𝚢", "𝙽𝚎𝚞𝚛𝚘𝚝𝚎𝚌𝚑𝚗𝚘𝚕𝚘𝚐𝚢", "𝚂𝚘𝚏𝚝𝚠𝚊𝚛𝚎 𝙳𝚎𝚟𝚎𝚕𝚘𝚙𝚖𝚎𝚗𝚝"];         // The array of titles to switch between.
+    let titleIndex = 0;                                                                                                                                     // Index to keep track of the current word.
+    let currentText = "";                                                                                                                                   // Current text that is being typed out.
+    let typeIndex = 0;                                                                                                                                      // Index to track the position of the current word being typed.
+    let typing = true;                                                                                                                                      // Flag to check if typing is in progress.
+    let holdTime = 5000;                                                                                                                                    // Time to hold the full word before starting to delete.
+    let holdTimeout;                                                                                                                                        // To store the timeout for holding the word.
+
+    // Function to simulate typewriter effect.
+    setInterval(() => {
+        if (typing) {
+
+            // Typing effect logic.
+            if (typeIndex < titles[titleIndex].length) {
+                currentText = titles[titleIndex].substring(0, typeIndex);   // Add one letter at a time.
+                document.title = currentText + "_";                         // Update the title with the current typed text.
+                typeIndex++;                                                // Move to the next letter in the word.
+            }
+
+            // Removing the cursor when the title is typed.
+            else if (typeIndex == titles[titleIndex].length) {
+                currentText = titles[titleIndex].substring(0, typeIndex);   // Add one letter at a time.
+                document.title = currentText + " ";                         // Update the title with the current typed text.
+                typeIndex++;                                                // Move to the next letter in the word.
+            }
+
+            // Once the full word is typed, set a timeout to hold the word for 3 seconds.
+            else {
+                if (!holdTimeout) {
+                    holdTimeout = setTimeout(() => {
+                        typing = false;                                     // Start the deleting phase after holding the word.
+                        holdTimeout = null;                                 // Reset the timeout variable.
+                    }, holdTime);                                           // Wait for 3 seconds before starting deletion.
+                }
+            }
+        } 
+        
+        else {
+            // Deleting effect logic.
+            if (typeIndex > 0) {
+                currentText = titles[titleIndex].substring(0, typeIndex);   // Remove one letter at a time.
+                document.title = currentText + "_";                         // Update the title with the current text.
+                typeIndex--;                                                // Move to the previous letter in the word.
+            } 
+            
+            // Once the word is fully deleted, move to the next title.
+            else {
+                typing = true;                                              // Start typing the next word.
+                titleIndex = (titleIndex + 1) % titles.length;              // Cycle to the next word.
+                typeIndex = 0;                                              // Reset typeIndex for the next word.
+                currentText = "_";                                          // Ensure the title is never empty by displaying a underscore.
+                document.title = currentText;                               // Set the title to space before starting the next word.
+            }
+        }
+    }, 300);    // Delay between each typing or deleting step to simulate the typewriter effect.
+} 
 
 // This function will cause scrolling to a specified div element on the page. 
 function smoothScrollToDivElement(buttonId, targetId) {
@@ -1497,6 +1757,9 @@ function smoothScrollToDivElement(buttonId, targetId) {
 
 // Ensure animations are only executed once the page is fully loaded.
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Start the tab title cycling.
+    switchTitle();
 
     // Start the animations which are launched on page load.
     window.addEventListener("load", pageLoadAnimations);

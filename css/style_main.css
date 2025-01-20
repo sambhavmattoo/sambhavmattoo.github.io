@@ -56,8 +56,11 @@ body {
         z-index: 1000;  
     }
 
-    /* The class for the title text. */
+   /* The class for the title text. */
     .title_text {
+        --interval: 1s;
+        --color1: yellowgreen;
+        animation: flicker steps(100) var(--interval) 1s infinite;
         background: rgba(33, 33, 33, 0);
         color: yellowgreen;
         font-family: 'BungeeShade';
@@ -67,6 +70,35 @@ body {
         position: relative;
         top: 2.5vw;
         text-align: center;
+        text-shadow: 0 0 10px yellowgreen;
+    }
+
+    /* A simple pulse flickering animation for a neon effect. Includes the standard keyframes and vendor prefixes for backward compatibility. */
+    @keyframes flicker {
+        50% {
+            color: #e3f1c5;
+        }
+    }
+
+    /* Vendor-prefixed @-webkit-keyframes for older versions of WebKit-based browsers (e.g., older Safari/Chrome). */
+    @-webkit-keyframes flicker {
+        50% {
+            color: #e3f1c5;
+        }
+    }
+
+    /* Vendor-prefixed @-moz-keyframes for older Firefox browsers. */
+    @-moz-keyframes flicker {
+        50% {
+            color: #e3f1c5;
+        }
+    }
+
+    /* Vendor-prefixed @-o-keyframes for older Opera browsers. */
+    @-o-keyframes flicker {
+        50% {
+            color: #e3f1c5;
+        }
     }
 
     /* The class for each of the navigation buttons. */
@@ -182,9 +214,9 @@ body {
         color: white;
         float: right;
         font-family: "PressStart2P";
-        font-size: max(0.75vw, 6.9px);
-        line-height: max(1vw, 9.2px);
-        margin: 0 max(2vw, 18.3px);
+        font-size: max(0.7vw, 6.0px);
+        line-height: max(1vw, 9.0px);
+        margin: 0 max(1.5vw, 13.7px) 0 max(2.5vw, 22.8px);
         margin-top: max(1vw, 9.2px);
         min-width: 238.3px;
         text-align: justify;
@@ -216,6 +248,9 @@ body {
 
     /* The class for the title text. */
     .title_text {
+        --interval: 1s;
+        --color1: yellowgreen;
+        animation: flicker steps(100) var(--interval) 1s infinite;
         background: rgba(33, 33, 33, 0);
         color: yellowgreen;
         font-family: "BungeeShade";
@@ -225,7 +260,35 @@ body {
         position: relative;
         top: 7.5vw;
         text-align: center;
+        text-shadow: 0 0 10px yellowgreen;
+    }
 
+    /* A simple pulse flickering animation for a neon effect. Includes the standard keyframes and vendor prefixes for backward compatibility. */
+    @keyframes flicker {
+        50% {
+            color: #e3f1c5;
+        }
+    }
+
+    /* Vendor-prefixed @-webkit-keyframes for older versions of WebKit-based browsers (e.g., older Safari/Chrome). */
+    @-webkit-keyframes flicker {
+        50% {
+            color: #e3f1c5;
+        }
+    }
+
+    /* Vendor-prefixed @-moz-keyframes for older Firefox browsers. */
+    @-moz-keyframes flicker {
+        50% {
+            color: #e3f1c5;
+        }
+    }
+
+    /* Vendor-prefixed @-o-keyframes for older Opera browsers. */
+    @-o-keyframes flicker {
+        50% {
+            color: #e3f1c5;
+        }
     }
 
     /* The class for each of the navigation buttons. */
@@ -260,18 +323,6 @@ body {
     /* Navbar button text is deactivated in mobile version. */
     .navbar_button_text {
         display: none;
-    }
-
-    /* The class to declare hovering behaviour on navigation buttons. */
-    .navbar_button:hover {
-        background-color: white;
-        transition-duration: 0.4s;
-    }
-    
-    /* Class to alter the navbar button icon color when hovering over the button. */
-    .navbar_button:hover .navbar_button_image{
-        filter: brightness(0) saturate(100%) invert(7%) sepia(86%) saturate(5425%) hue-rotate(296deg) brightness(109%) contrast(107%);
-        transition-duration: 0.4s;
     }
 
     /* The class for when a navigation button is clicked. */

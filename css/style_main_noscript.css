@@ -1,3 +1,4 @@
+/* For desktop computers and tablets. */
 @media screen and (min-width: 601px) {
 
     /* The class for the combined title and navigation bar. */
@@ -55,6 +56,7 @@
 
 }
 
+/* For mobiles. */
 @media screen and (max-width: 600px) {
 
     /* The class for the combined title and navigation bar. */
