@@ -11,6 +11,9 @@ let isTypingFaster = false;
 // To store all timeout IDs for navbar button animations.
 let navbarButtonTimeoutIDs = []; 
 
+// Flag to track when page load animations are complete.
+let loadAnimationsCompleted = false;
+
 // Funtion to control scrolling behaviour for Desktop version.
 function adjustOnScrollNavbarDesktop() {
 
@@ -1443,6 +1446,11 @@ function randomFlicker(element_ids) {
 
     // Calculate a random interval by adding an additional random value to the base interval.
     var randomInterval = baseInterval + Math.floor(Math.random() * (randomMaxRange - randomMinRange + 1) - randomMinRange);
+
+    // Ensuring randomInterval is never equal to 0, so there is always flickering.
+    if (randomInterval == 0) {
+        randomInterval = baseInterval;
+    }
   
     // Iterate over each element_id passed to the function.
     element_ids.forEach(element_id => {
@@ -1452,14 +1460,21 @@ function randomFlicker(element_ids) {
 
         // Ensure the interval is adjusted each time the animation completes.
         element.addEventListener('animationiteration', () => {
+
             // Calculate a new random interval after the animation iteration ends.
             var randomInterval = baseInterval + Math.floor(Math.random() * (randomMaxRange - randomMinRange + 1) - randomMinRange);
+
+            // Ensuring randomInterval is never equal to 0, so there is always flickering.
+            if (randomInterval == 0) {
+                randomInterval = baseInterval;
+            }
 
             // Iterate over all elements again to adjust their flicker intervals.
             element_ids.forEach(element_id => {
                 const element = document.getElementById(element_id);
                 element.style.setProperty('--interval', `${randomInterval}ms`);
             });
+
         });
 
         // Fallback for older WebKit browsers.
@@ -1572,6 +1587,132 @@ function jiggleImage(element_id) {
     }, pauseTime);  // Repeat every 3 seconds.
 }
 
+// Function to fade in an element by ID over a given duration.
+function fadeInElementById(elementId, duration = 500) {
+    var element = document.getElementById(elementId);
+
+    if (element) {
+        // Set initial opacity and apply transition.
+        element.style.opacity = 0;
+        element.style.transition = `opacity ${duration}ms ease-in-out`;
+
+        // Trigger reflow to apply transition properly.
+        void element.offsetWidth;
+
+        // Set final opacity to 1 to start fade-in.
+        element.style.opacity = 1;
+    }
+}
+
+
+// Sets up press/release behavior for any isometric button by id.
+function isometricButtonPressBehavior(id) {
+    var button = document.getElementById(id);
+    if (!button) return;
+    button.addEventListener('mousedown', function() {
+        button.classList.add('clicked');
+    });
+    button.addEventListener('mouseup', function() {
+        button.classList.remove('clicked');
+    });
+    button.addEventListener('mouseleave', function() {
+        button.classList.remove('clicked');
+    });
+    button.addEventListener('touchstart', function() {
+        button.classList.add('clicked');
+    });
+    button.addEventListener('touchend', function() {
+        button.classList.remove('clicked');
+    });
+    button.addEventListener('click', function(event) {
+        if (button.tagName.toLowerCase() === 'a' && button.hasAttribute('href')) {
+            event.preventDefault();
+            setTimeout(function() {
+                window.location.href = button.getAttribute('href');
+            }, 1000);
+        }
+    });
+}
+
+// Function to trigger the experience section animations when it comes into view.
+function experienceSectionAnimations() {
+    // Calculate timing delays.
+    var load_time_1 = 500;
+    var load_time_2 = 1500;
+    var load_time_3 = 1000; 
+    var load_time_4 = 7500; 
+
+    // Declare the text for the experience section heading.
+    var experienceSectionHeadingText = new Array("Experience");
+
+    // Declare the text for the experience section lower text.
+    var experienceSectionLowerText = [
+        "Hopefully that summarizes some of my previous experiences. Press the button below to download a copy of my most recent CV. Thanks!"
+    ];
+
+    // Start a timed series of animations for the experience section.
+    setTimeout(function() {
+        isTypingFaster = false;
+        typewriterText(experienceSectionHeadingText, "experience_section_heading");
+        // Start a second animation: fade in the slider after a short delay.
+        setTimeout(function() {
+            // Scramble the experience section heading.
+            textScrambleAnimation('experience_section_heading');
+            fadeInElementById('experience_slider', 500);
+            // Start a third animation: typewriter for lower text after another delay.
+            setTimeout(function() {
+                // Jiggle all experience slide images
+                for (let i = 1; i <= 7; i++) {
+                    jiggleImage(`experience_slide_image_${i}`);
+                }
+                // Scramble the experience section heading.
+                textScrambleAnimation('experience_section_heading');
+                typewriterText(experienceSectionLowerText, "experience_section_lower_text", 50);
+                experience_section_lower_text_done = true;
+                // Fade in the CV download button after lower text is typed.
+                setTimeout(function() {
+                    fadeInElementById('CV_download_button', 500);
+                    isometricButtonPressBehavior('CV_download_button');
+                }, load_time_4);
+            }, load_time_3);
+        }, load_time_2);
+    }, load_time_1);
+}
+
+// Detect if sections are in view using IntersectionObserver.
+function pageScrollAnimationsTrigger() {
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting || loadAnimationsCompleted) {
+                // Trigger page scroll animations when section is in view.
+                pageScrollAnimations();
+                // Optionally stop observing after animation.
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        // Trigger animation when 50% of the section is visible.
+        threshold: 0.5 
+    });
+
+    // Observe the experience_section element.
+    const experienceSection = document.getElementById('experience_section');
+
+    // Observe this specific section.
+    observer.observe(experienceSection); 
+
+}
+
+// Function to trigger page scroll animations.
+function pageScrollAnimations() {
+
+    // Trigger animations for the experience section.
+    experienceSectionAnimations();
+    
+    //Trigger animations for other sections here if needed.
+
+}
+
 // Function for all animations on page load.
 function pageLoadAnimations() {
 
@@ -1650,6 +1791,9 @@ function pageLoadAnimations() {
 
                             // Start the animations to type out the about section text.
                             typewriterText(aboutSectionText, "about_section_text", typeSpeed = 50);
+
+                            // Mark page load animations as completed.
+                            loadAnimationsCompleted = true;
                         
                         }, load_time_6); 
 
@@ -1664,6 +1808,8 @@ function pageLoadAnimations() {
     },  load_time_1);
 
 }
+
+
 
 // Function to cycle the tab title with a typewriter effect.
 function switchTitle() {
@@ -1725,7 +1871,7 @@ function switchTitle() {
 } 
 
 // This function will cause scrolling to a specified div element on the page. 
-function smoothScrollToDivElement(buttonId, targetId) {
+function smoothScrollToDivElement(buttonId, targetId, offset = 0) {
     // Attach an event listener to the button.
     document.getElementById(buttonId).addEventListener('click', function (event) {
 
@@ -1733,7 +1879,7 @@ function smoothScrollToDivElement(buttonId, targetId) {
         event.preventDefault();  
       
         // Get the target element to scroll to.
-        const targetElement = document.getElementById(targetId);
+        var targetElement = document.getElementById(targetId);
       
         if (targetElement) {
             // Get the current height of the navbar dynamically by its ID.
@@ -1745,9 +1891,12 @@ function smoothScrollToDivElement(buttonId, targetId) {
             // Adjust the scroll position by subtracting the navbar height.
             var topValue = targetOffsetTop - navbarHeight;
 
+            // Calculate given offset in vw.
+            var offsetAdd = offset * window.innerWidth / 100;
+
             // Scroll to the target element.
             window.scrollTo({
-                top: topValue,
+                top: topValue + offsetAdd,
                 behavior: 'smooth'  // Enable smooth scrolling.
             });
         }
@@ -1770,4 +1919,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event listeners for smooth scrolling to different sections.
     smoothScrollToDivElement('about_navbar_button', 'about_section');
+    smoothScrollToDivElement('experience_navbar_button', 'experience_section', 2);
+
+    // Start the scroll-triggered animations once page load animations are complete.
+    pageScrollAnimationsTrigger();
 });
+
+

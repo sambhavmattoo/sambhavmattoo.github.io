@@ -6,8 +6,13 @@ html {
 
 /* The HTML body seems to come with an auto margin that needs to be removed.*/
 body {
-    margin: 0px;
-    padding: 0px;
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid black;
+    box-sizing: border-box;
+    position: relative;
+    top: -1px;
 }
 
 /* Initializing fonts. */
@@ -60,7 +65,7 @@ body {
     .title_text {
         --interval: 1s;
         --color1: yellowgreen;
-        animation: flicker steps(100) var(--interval) 1s infinite;
+        animation: title_text_flicker steps(100) var(--interval) 1s infinite;
         background: rgba(33, 33, 33, 0);
         color: yellowgreen;
         font-family: 'BungeeShade';
@@ -74,28 +79,28 @@ body {
     }
 
     /* A simple pulse flickering animation for a neon effect. Includes the standard keyframes and vendor prefixes for backward compatibility. */
-    @keyframes flicker {
+    @keyframes title_text_flicker {
         50% {
             color: #e3f1c5;
         }
     }
 
     /* Vendor-prefixed @-webkit-keyframes for older versions of WebKit-based browsers (e.g., older Safari/Chrome). */
-    @-webkit-keyframes flicker {
+    @-webkit-keyframes title_text_flicker {
         50% {
             color: #e3f1c5;
         }
     }
 
     /* Vendor-prefixed @-moz-keyframes for older Firefox browsers. */
-    @-moz-keyframes flicker {
+    @-moz-keyframes title_text_flicker {
         50% {
             color: #e3f1c5;
         }
     }
 
     /* Vendor-prefixed @-o-keyframes for older Opera browsers. */
-    @-o-keyframes flicker {
+    @-o-keyframes title_text_flicker {
         50% {
             color: #e3f1c5;
         }
@@ -180,6 +185,7 @@ body {
 
     /* The class for the whole About section. */
     .about_section {
+        height: 35vw;
         margin: max(5vw, 50px) auto;
         min-width: 504.2px;
         width: 55vw;
@@ -221,7 +227,314 @@ body {
         min-width: 238.3px;
         text-align: justify;
         width: 26vw;
-    }   
+    }
+    
+    /* The class for the whole Experience section. */
+    .experience_section {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin: max(7vw, 140px) auto;
+        min-width: 504.2px;
+        width: 55vw;
+    }
+
+    /* The class for the Experience section slider. */
+    .experience_slider {
+        opacity: 0;
+    }
+
+    /* The class for the Experience section heading. */
+    .experience_section_heading {
+        background: transparent;
+        color: yellowgreen;
+        font-family: "VT323";
+        font-size: max(3.5vw, 50px);
+        margin: 0; 
+        min-width: 504.2px;
+        text-align: center;
+        width: 55vw;
+    }
+
+    /* The class for the Experience section slides container. */
+    .experience_slides {
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+    }
+
+    /* The class for each individual experience slide. */
+    .experience_slide {
+        align-items: center;
+        display: none;
+        justify-content: center;
+        width: max(55vw, 504.2px); 
+    }
+
+    /* The class for the left experience navigation button. */
+    .experience_slider_left_nav_button {
+        background: transparent;
+        border-radius: 1vw;
+        border-width: 0px;
+        display: flex;
+        height: 10vw;
+        justify-content: center;
+        margin-top: max(5vw, 45.8px);
+        margin-bottom: max(5vw, 45.8px);
+        min-height: 91.6px;
+        min-width: 45.8px;
+        opacity: 20%;
+        width: 5vw;
+    }
+
+    /* The class for the right experience navigation button. */
+    .experience_slider_right_nav_button {
+        background: transparent;
+        border-radius: 1vw;
+        border-width: 0px;
+        display: flex;
+        height: 10vw;
+        justify-content: center;
+        margin-top: max(5vw, 45.8px);
+        margin-bottom: max(5vw, 45.8px);
+        min-height: 91.6px;
+        min-width: 45.8px;
+        opacity: 20%;
+        width: 5vw;
+    }
+
+    /* The class for the left experience navigation button icon image. */
+    .experience_slider_left_nav_button_image {
+        background-color: transparent;
+        filter: invert(100%);
+        min-width: 22.9px;
+        padding: 2.5vw 0;
+        width: 2.5vw;
+    }
+
+    /* The class for the right experience navigation button icon image. */
+    .experience_slider_right_nav_button_image {
+        background-color: transparent;
+        filter: invert(100%);
+        min-width: 22.9px;
+        padding: 2.5vw 0;
+        width: 2.5vw;
+    }
+
+    /* Experience left navigation button behaviour on hover. */
+    .experience_slider_left_nav_button:hover {
+        background-color: rgb(33, 33, 33);
+        opacity: 100%;
+        transition-duration: 0.4s;
+    }
+
+    /* Experience right navigation button behaviour on hover. */
+    .experience_slider_right_nav_button:hover {
+        background-color: rgb(33, 33, 33);
+        opacity: 100%;
+        transition-duration: 0.4s;
+    }
+
+    /* Experience left navigation button behaviour on active state. */
+    .experience_slider_left_nav_button:active .experience_slider_left_nav_button_image {
+        opacity: 50%;
+    }
+
+    /* Experience right navigation button behaviour on active state. */
+    .experience_slider_right_nav_button:active .experience_slider_right_nav_button_image {
+        opacity: 50%;
+    }
+
+    /* The class for an experience slide image. */
+    .experience_slide_image {
+        border-radius: 2vw;
+        height: 15vw;
+        margin-left: max(2.5vw, 22.9px);
+        min-height: 137.5px;
+        opacity: 0;
+        outline-color: white;
+        outline-style: solid;
+        outline-width: 2px;
+        width: max(15vw, 137.5px);
+    }
+
+    /* The class for the experience slide content. */
+    .experience_slide_content {
+        color: white;
+        float: right;
+        font-family: "PressStart2P";
+        font-size: max(0.65vw, 6.5px);
+        height: 15vw;
+        line-height: max(0.85vw, 8.0px);
+        margin-right: max(2.5vw, 22.9px);
+        min-height: 137.5px;
+        padding: 0 2vw;
+        text-align: left;
+        width: max(30vw, 275px);
+        opacity: 0;
+    }
+
+    /* The class for the experience slide heading. */
+    .experience_slide_heading {
+        font-weight: bold;
+    }
+
+    /* Removing radio button input. */
+    .experience_slide_input {
+        display: none;
+    }
+
+    /* Settings for slide carousel and transition. */
+    .experience_slide_input:nth-of-type(1):checked ~ .experience_slide:nth-of-type(1),
+    .experience_slide_input:nth-of-type(2):checked ~ .experience_slide:nth-of-type(2),
+    .experience_slide_input:nth-of-type(3):checked ~ .experience_slide:nth-of-type(3),
+    .experience_slide_input:nth-of-type(4):checked ~ .experience_slide:nth-of-type(4),
+    .experience_slide_input:nth-of-type(5):checked ~ .experience_slide:nth-of-type(5),
+    .experience_slide_input:nth-of-type(6):checked ~ .experience_slide:nth-of-type(6),
+    .experience_slide_input:nth-of-type(7):checked ~ .experience_slide:nth-of-type(7) {
+
+        display: flex;
+    }
+
+    .experience_slide_input:nth-of-type(1):checked ~ .experience_slide:nth-of-type(1) .experience_slide_image,
+    .experience_slide_input:nth-of-type(2):checked ~ .experience_slide:nth-of-type(2) .experience_slide_image,
+    .experience_slide_input:nth-of-type(3):checked ~ .experience_slide:nth-of-type(3) .experience_slide_image,
+    .experience_slide_input:nth-of-type(4):checked ~ .experience_slide:nth-of-type(4) .experience_slide_image,
+    .experience_slide_input:nth-of-type(5):checked ~ .experience_slide:nth-of-type(5) .experience_slide_image,
+    .experience_slide_input:nth-of-type(6):checked ~ .experience_slide:nth-of-type(6) .experience_slide_image,
+    .experience_slide_input:nth-of-type(7):checked ~ .experience_slide:nth-of-type(7) .experience_slide_image {
+        opacity: 1;
+        -webkit-animation: fadeIn 2s ease-in-out both;
+        animation: fadeIn 2s ease-in-out both;
+    }
+
+    .experience_slide_input:nth-of-type(1):checked ~ .experience_slide:nth-of-type(1) .experience_slide_content,
+    .experience_slide_input:nth-of-type(2):checked ~ .experience_slide:nth-of-type(2) .experience_slide_content,
+    .experience_slide_input:nth-of-type(3):checked ~ .experience_slide:nth-of-type(3) .experience_slide_content,
+    .experience_slide_input:nth-of-type(4):checked ~ .experience_slide:nth-of-type(4) .experience_slide_content,
+    .experience_slide_input:nth-of-type(5):checked ~ .experience_slide:nth-of-type(5) .experience_slide_content,
+    .experience_slide_input:nth-of-type(6):checked ~ .experience_slide:nth-of-type(6) .experience_slide_content,
+    .experience_slide_input:nth-of-type(7):checked ~ .experience_slide:nth-of-type(7) .experience_slide_content {
+        opacity: 1;
+        -webkit-animation: fadeIn 2s ease-in-out both;
+        animation: fadeIn 2s ease-in-out both;
+    }
+
+    /* Webkit animations for slide fade-in. */
+    @-webkit-keyframes fadeIn {
+        from { opacity: 0; }  
+        to { opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }  
+        to { opacity: 1; }
+    }
+
+    @-moz-keyframes fadeIn {
+        from { opacity: 0; }  
+        to { opacity: 1; }
+    }
+
+    @-o-keyframes fadeIn {
+        from { opacity: 0; }  
+        to { opacity: 1; }
+    }
+
+    /* The class for the experience section lower text. */
+    .experience_section_lower_text {
+        color: white;
+        float: center;
+        font-family: "PressStart2P";
+        font-size: max(0.7vw, 6.0px);
+        line-height: max(1vw, 9.0px);
+        margin: max(1vw, 9.2px) auto 0 auto;
+        min-width: 366.6px;
+        text-align: justify;
+        width: 40vw;
+    }
+
+    /* The class for the CV download button. */
+    .CV_download_button {
+        align-items: center;
+        background-color: yellowgreen;
+        border-radius: 1px;
+        border-width: 0px;
+        display: flex;
+        height: 5vw;
+        justify-content: center;
+        left: 50%;
+        margin: 0 26.25vw 0 8.75vw;
+        margin-top: 5vw;
+        opacity: 0;
+        outline-color: grey;
+        outline-style: solid;
+        outline-width: 2px;
+        text-decoration: none;
+        transform: translate(50%, -50%);
+        transition: opacity .5s;
+        width: 20vw;
+        z-index: 3;
+    }
+
+    /* The class for the text inside the CV download button. */    
+    .CV_button_text {
+        color: black;
+        font-family: "VT323";
+        font-size: max(3vw, 20px);
+    }
+        
+    /* Classes to make the "sides" of the CV download button. */
+    .CV_download_button::before {
+        background-color: rgb(117,156,39);
+        border-radius: 1px;
+        bottom: calc(-1vw - 2px);
+        content: '';
+        height: 1vw;
+        left: calc(-0.5vw - 1px - 0.5vw);
+        outline: 2px solid grey;
+        position: absolute;
+        transform-origin: bottom left;
+        transform: skewX(-45deg);
+        width: 100%;
+        z-index: 2;
+    }
+        
+    .CV_download_button::after {
+        background-color: rgb(181,241,60);
+        border-radius: 1px;
+        bottom: calc(-0.5vw - 0.5vw);
+        content: '';
+        height: 100%;
+        left: calc(-1vw - 2px);
+        outline: 2px solid grey;
+        position: absolute;
+        transform-origin: top left;
+        transform: skewY(-45deg);
+        width: 1vw;
+        z-index: 1;
+    }
+    
+    
+    /* Classes for click behavior of CV download button. */
+    .CV_download_button.clicked {
+        transform: translate(calc(50% - 0.5vw), calc(-50% + 0.5vw));
+    }
+        
+    .CV_download_button.clicked::before {
+        height: calc(1vw - 0.5vw);
+        bottom: calc(-1vw - 2px + 0.5vw);
+        left: calc(-0.5vw - 1px);
+        transform: skewX(-45deg);
+    }
+        
+    .CV_download_button.clicked::after {
+        width: calc(1vw - 0.5vw);
+        left: calc(-1vw - 2px + 0.5vw);
+        bottom: calc(-0.5vw - 0.5vw + 0.5vw);
+        transform: skewY(-45deg);
+    }
+
 }
 
 /* For mobiles. */
@@ -369,6 +682,7 @@ body {
 
     /* The class for the whole About section. */
     .about_section {
+        height: 250vw;
         margin: max(10vw, 50px) auto;
         width: 85vw;
     }
@@ -404,6 +718,286 @@ body {
         margin: 5vw 5vw 0vw 5vw;
         text-align: left;
         width: 75vw;
+    }
+
+    /* The class for the whole Experience section. */
+    .experience_section {
+        width: 100vw;
+    }
+
+    /* The class for the Experience section slider. */
+    .experience_slider {
+        opacity: 0;
+    }
+
+    /* The class for the Experience section heading. */
+    .experience_section_heading {
+        background: transparent;
+        color: yellowgreen;
+        font-family: "VT323";
+        font-size: 12.5vw;
+        margin: 0 2.5vw 5vw 2.5vw;
+        text-align: center;
+        width: 95vw;
+    }
+
+    /* The class for the Experience section slides container. */
+    .experience_slides {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        overflow: hidden;
+        padding-top: 10px;
+        position: relative;
+        width: 100%;
+    }
+
+    /* The class for each individual experience slide. */
+    .experience_slide {
+        align-items: center;
+        display: none;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    /* The class for an experience slide image. */
+    .experience_slide_image {
+        border-radius: 2vw;
+        display: block;
+        height: 60vw;
+        margin-bottom: max(3vw, 15px);
+        margin-top: 0;
+        opacity: 0;
+        outline: 2px solid white;
+        position: relative;
+        width: 60vw;
+    }
+
+    /* The class for the experience slide content. */
+    .experience_slide_content {
+        color: white;
+        float: left;
+        font-family: "PressStart2P";
+        font-size: 3vw;
+        line-height: 3.5vw;
+        margin: 5vw 12.5vw 0 12.5vw;
+        min-height: 425px;
+        opacity: 0;
+        text-align: left;
+        width: 75vw;
+    }
+
+    /* The class for the experience slide heading. */
+    .experience_slide_heading {
+        font-weight: bold;
+    }
+
+    /* Removing radio button input. */
+    .experience_slide_input {
+        display: none;
+    }
+
+    /* The class for the left experience navigation button. */
+    .experience_slider_left_nav_button {
+        background: transparent;
+        border-radius: 2.5vw;
+        border-width: 0px;
+        display: flex;
+        height: 20vw;
+        justify-content: center;
+        margin-bottom: max(5vw, 45.8px);
+        margin-top: 20vw;
+        min-height: 91.6px;
+        min-width: 45.8px;
+        opacity: 20%;
+        position: absolute;
+        width: 10vw;
+        left: 6.5vw;
+    }
+
+    /* The class for the right experience navigation button. */
+    .experience_slider_right_nav_button {
+        background: transparent;
+        border-radius: 2.5vw;
+        border-width: 0px;
+        display: flex;
+        height: 20vw;
+        justify-content: center;
+        margin-bottom: 0;
+        margin-top: 20vw;
+        min-height: 91.6px;
+        min-width: 45.8px;
+        opacity: 20%;
+        position: absolute;
+        width: 10vw;
+        right: 6.5vw;
+    }
+
+    /* The class for the left/right nav button icon image. */
+    .experience_slider_left_nav_button_image,
+    .experience_slider_right_nav_button_image {
+        background-color: transparent;
+        filter: invert(100%);
+        min-width: 24px;
+        width: 6vw;
+    }
+
+    /* Experience left navigation button behaviour on hover. */
+    .experience_slider_left_nav_button:hover {
+        background-color: rgb(33, 33, 33);
+        opacity: 100%;
+        transition-duration: 0.4s;
+    }
+
+    /* Experience right navigation button behaviour on hover. */
+    .experience_slider_right_nav_button:hover {
+        background-color: rgb(33, 33, 33);
+        opacity: 100%;
+        transition-duration: 0.4s;
+    }
+
+    /* Experience left navigation button behaviour on active state. */
+    .experience_slider_left_nav_button:active .experience_slider_left_nav_button_image {
+        opacity: 50%;
+    }
+
+    /* Experience right navigation button behaviour on active state. */
+    .experience_slider_right_nav_button:active .experience_slider_right_nav_button_image {
+        opacity: 50%;
+    }
+
+    /* Settings for slide carousel and transition. */
+    .experience_slide_input:nth-of-type(1):checked ~ .experience_slide:nth-of-type(1),
+    .experience_slide_input:nth-of-type(2):checked ~ .experience_slide:nth-of-type(2),
+    .experience_slide_input:nth-of-type(3):checked ~ .experience_slide:nth-of-type(3),
+    .experience_slide_input:nth-of-type(4):checked ~ .experience_slide:nth-of-type(4),
+    .experience_slide_input:nth-of-type(5):checked ~ .experience_slide:nth-of-type(5),
+    .experience_slide_input:nth-of-type(6):checked ~ .experience_slide:nth-of-type(6),
+    .experience_slide_input:nth-of-type(7):checked ~ .experience_slide:nth-of-type(7) {
+        display: flex;
+    }
+
+    .experience_slide_input:nth-of-type(1):checked ~ .experience_slide:nth-of-type(1) .experience_slide_image,
+    .experience_slide_input:nth-of-type(2):checked ~ .experience_slide:nth-of-type(2) .experience_slide_image,
+    .experience_slide_input:nth-of-type(3):checked ~ .experience_slide:nth-of-type(3) .experience_slide_image,
+    .experience_slide_input:nth-of-type(4):checked ~ .experience_slide:nth-of-type(4) .experience_slide_image,
+    .experience_slide_input:nth-of-type(5):checked ~ .experience_slide:nth-of-type(5) .experience_slide_image,
+    .experience_slide_input:nth-of-type(6):checked ~ .experience_slide:nth-of-type(6) .experience_slide_image,
+    .experience_slide_input:nth-of-type(7):checked ~ .experience_slide:nth-of-type(7) .experience_slide_image {
+        animation: fadeIn 1.5s ease-in-out both;
+        opacity: 1;
+    }
+
+    .experience_slide_input:nth-of-type(1):checked ~ .experience_slide:nth-of-type(1) .experience_slide_content,
+    .experience_slide_input:nth-of-type(2):checked ~ .experience_slide:nth-of-type(2) .experience_slide_content,
+    .experience_slide_input:nth-of-type(3):checked ~ .experience_slide:nth-of-type(3) .experience_slide_content,
+    .experience_slide_input:nth-of-type(4):checked ~ .experience_slide:nth-of-type(4) .experience_slide_content,
+    .experience_slide_input:nth-of-type(5):checked ~ .experience_slide:nth-of-type(5) .experience_slide_content,
+    .experience_slide_input:nth-of-type(6):checked ~ .experience_slide:nth-of-type(6) .experience_slide_content,
+    .experience_slide_input:nth-of-type(7):checked ~ .experience_slide:nth-of-type(7) .experience_slide_content {
+        animation: fadeIn 1.5s ease-in-out both;
+        opacity: 1;
+    }
+
+    /* The class for the experience section lower text. */
+    .experience_section_lower_text {
+        color: white;
+        font-family: "PressStart2P";
+        font-size: 3vw;
+        line-height: 3.5vw;
+        margin: 5vw 12.5vw 5vw 12.5vw;
+        min-height: 125px;
+        position: relative;
+        text-align: left;
+        width: 75vw;
+    }
+
+    /* The class for the CV download button. */
+    .CV_download_button {
+        align-items: center;
+        background-color: yellowgreen;
+        border-radius: 1px;
+        border-width: 0px;
+        display: flex;
+        height: 12.5vw;
+        justify-content: center;
+        left: 50%;
+        margin: 0 0vw 0 0vw;
+        margin-top: 25vw;
+        opacity: 0;
+        outline-color: grey;
+        outline-style: solid;
+        outline-width: 2px;
+        text-decoration: none;
+        transform: translate(50%, -50%);
+        transition: opacity 0.5s;
+        width: 50vw;
+        z-index: 3;
+    }
+
+    /* The class for the text inside the CV download button. */
+    .CV_button_text {
+        color: black;
+        font-family: "VT323";
+        font-size: max(7.5vw, 20px);
+    }
+
+    /* Classes to make the "sides" of the CV download button. */
+    .CV_download_button::before {
+        background-color: rgb(117, 156, 39);
+        border-radius: 1px;
+        bottom: calc(-2vw - 2px);
+        content: '';
+        height: 2vw;
+        left: calc(-1vw - 1px - 1vw);
+        outline: 2px solid grey;
+        position: absolute;
+        transform: skewX(-45deg);
+        transform-origin: bottom left;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .CV_download_button::after {
+        background-color: rgb(181, 241, 60);
+        border-radius: 1px;
+        bottom: calc(-1vw - 1vw);
+        content: '';
+        height: 100%;
+        left: calc(-2vw - 2px);
+        outline: 2px solid grey;
+        position: absolute;
+        transform: skewY(-45deg);
+        transform-origin: top left;
+        width: 2vw;
+        z-index: 1;
+    }
+
+    /* Classes for click behavior of CV download button. */
+    .CV_download_button.clicked {
+        transform: translate(calc(50% - 1vw), calc(-50% + 1vw));
+    }
+
+    .CV_download_button.clicked::before {
+        bottom: calc(-1vw - 2px + 0.5vw);
+        height: calc(1vw - 0.5vw);
+        left: calc(-0.5vw - 1px);
+        transform: skewX(-45deg);
+    }
+
+    .CV_download_button.clicked::after {
+        bottom: calc(-0.5vw - 0.5vw + 0.5vw);
+        left: calc(-1vw - 2px + 0.5vw);
+        transform: skewY(-45deg);
+        width: calc(1vw - 0.5vw);
+    }
+
+    /* Webkit animations for slide fade-in. */
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
 }
