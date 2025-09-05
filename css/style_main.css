@@ -234,7 +234,9 @@ body {
         align-items: center;
         display: flex;
         flex-direction: column;
+        height: 40vw;
         margin: max(7vw, 140px) auto;
+        min-height: 400px;
         min-width: 504.2px;
         width: 55vw;
     }
@@ -447,6 +449,7 @@ body {
         float: center;
         font-family: "PressStart2P";
         font-size: max(0.7vw, 6.0px);
+        height: 3vw;
         line-height: max(1vw, 9.0px);
         margin: max(1vw, 9.2px) auto 0 auto;
         min-width: 366.6px;
@@ -533,6 +536,28 @@ body {
         left: calc(-1vw - 2px + 0.5vw);
         bottom: calc(-0.5vw - 0.5vw + 0.5vw);
         transform: skewY(-45deg);
+    }
+
+    /* The class for the whole Contact section. */
+    .contact_section {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin: max(9vw, 180px) auto;
+        min-width: 504.2px;
+        width: 55vw;
+    }
+
+    /* The class for the Contacr section heading. */
+    .contact_section_heading {
+        background: transparent;
+        color: yellowgreen;
+        font-family: "VT323";
+        font-size: max(3.5vw, 50px);
+        margin: 0; 
+        min-width: 504.2px;
+        text-align: center;
+        width: 55vw;
     }
 
 }
@@ -722,6 +747,7 @@ body {
 
     /* The class for the whole Experience section. */
     .experience_section {
+        height: 150vh;
         width: 100vw;
     }
 
@@ -807,6 +833,7 @@ body {
         display: flex;
         height: 20vw;
         justify-content: center;
+        left: 4.5vw;
         margin-bottom: max(5vw, 45.8px);
         margin-top: 20vw;
         min-height: 91.6px;
@@ -814,7 +841,6 @@ body {
         opacity: 20%;
         position: absolute;
         width: 10vw;
-        left: 6.5vw;
     }
 
     /* The class for the right experience navigation button. */
@@ -830,9 +856,9 @@ body {
         min-height: 91.6px;
         min-width: 45.8px;
         opacity: 20%;
+        right: 4.5vw;
         position: absolute;
         width: 10vw;
-        right: 6.5vw;
     }
 
     /* The class for the left/right nav button icon image. */
@@ -998,6 +1024,23 @@ body {
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
+    }
+
+    /* The class for the whole Contact section. */
+    .contact_section {
+        margin: max(10vw, 50px) auto;
+        width: 100vw;
+    }
+
+    /* The class for the Contact section heading. */
+    .contact_section_heading {
+        background: transparent;
+        color: yellowgreen;
+        font-family: "VT323";
+        font-size: 12.5vw;
+        margin: 0 2.5vw 5vw 2.5vw;
+        text-align: center;
+        width: 95vw;
     }
 
 }

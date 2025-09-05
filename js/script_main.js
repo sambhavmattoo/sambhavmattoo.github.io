@@ -1679,37 +1679,62 @@ function experienceSectionAnimations() {
     }, load_time_1);
 }
 
-// Detect if sections are in view using IntersectionObserver.
-function pageScrollAnimationsTrigger() {
+// Function to trigger the contact section animations when it comes into view.
+function contactSectionAnimations() {
+    // Calculate timing delays.
+    var load_time_1 = 500;
+    var load_time_2 = 1500;
+
+    // Declare the text for the contact section heading.
+    var contactSectionHeadingText = new Array("Contact");
+
+
+    // Start a timed series of animations for the contact section.
+    setTimeout(function() {
+        isTypingFaster = false;
+        typewriterText(contactSectionHeadingText, "contact_section_heading");
+        setTimeout(function() {
+            // Scramble the contact section heading.
+            textScrambleAnimation('contact_section_heading');
+
+        }, load_time_2);
+    }, load_time_1);
+}
+
+// Function to set up IntersectionObserver for a given section and trigger its animation callback.
+function observeSection(sectionId, callback) {
+    // Create a new IntersectionObserver to monitor when the section comes into view.
     const observer = new IntersectionObserver((entries, observer) => {
+        // Loop through each entry the observer is tracking.
         entries.forEach(entry => {
+            // Check if the current section is in the viewport (intersecting), or if all animations should load regardless.
             if (entry.isIntersecting || loadAnimationsCompleted) {
-                // Trigger page scroll animations when section is in view.
-                pageScrollAnimations();
-                // Optionally stop observing after animation.
+                // Call the animation function for this specific section.
+                callback();
+
+                // Once the animation is triggered, we stop observing this section to avoid repeating the animation.
                 observer.unobserve(entry.target);
             }
         });
-    }, {
-        // Trigger animation when 50% of the section is visible.
+    }, { 
+        // Set the threshold to 0.5, meaning the animation will trigger when 50% of the section is visible.
         threshold: 0.5 
     });
 
-    // Observe the experience_section element.
-    const experienceSection = document.getElementById('experience_section');
+    // Select the section DOM element by its ID.
+    const section = document.getElementById(sectionId);
 
-    // Observe this specific section.
-    observer.observe(experienceSection); 
-
+    // If the section exists on the page, begin observing it for scroll-based visibility.
+    if (section) observer.observe(section);
 }
 
-// Function to trigger page scroll animations.
-function pageScrollAnimations() {
+// Function to initialize scroll-based animations for different page sections.
+function pageScrollAnimationsTrigger() {
+    // Observe the 'experience_section' and run its animation when it comes into view.
+    observeSection('experience_section', experienceSectionAnimations);
 
-    // Trigger animations for the experience section.
-    experienceSectionAnimations();
-    
-    //Trigger animations for other sections here if needed.
+    // Observe the 'contact_section' and run its animation when it comes into view.
+    observeSection('contact_section', contactSectionAnimations);
 
 }
 
@@ -1882,6 +1907,7 @@ function smoothScrollToDivElement(buttonId, targetId, offset = 0) {
         var targetElement = document.getElementById(targetId);
       
         if (targetElement) {
+
             // Get the current height of the navbar dynamically by its ID.
             var navbarHeight = document.getElementById('navbar_clearance_block_relative').offsetHeight;
 
@@ -1920,6 +1946,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners for smooth scrolling to different sections.
     smoothScrollToDivElement('about_navbar_button', 'about_section');
     smoothScrollToDivElement('experience_navbar_button', 'experience_section', 2);
+    smoothScrollToDivElement('contact_navbar_button', 'contact_section', 2);
 
     // Start the scroll-triggered animations once page load animations are complete.
     pageScrollAnimationsTrigger();
